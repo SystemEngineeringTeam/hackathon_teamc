@@ -19,15 +19,16 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.13.8",
     "@babel/preset-react": "^7.12.13",
-    "react-hot-loader": "^4.13.0"
+    "react-hot-loader": "^4.13.0",
+    "regenerator-runtime": "^0.13.7"
   },
   "main": "./src/index.jsx",
+  "repository": {
+    "directory": "../"
+  },
   "scripts": {
     "start": "parcel ./src/index.html"
   },
   "author": "",
-  "license": "ISC",
-  "browserslist": [
-    "since 2017-06"
-  ]
+  "license": "ISC"
 }

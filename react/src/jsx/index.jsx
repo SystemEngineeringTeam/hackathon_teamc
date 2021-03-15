@@ -1,6 +1,14 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { Provider } from "react-redux"
+import App from "./App"
+import Store from "./Store"
+import "regenerator-runtime"
 
 let root = document.querySelector("#root")
-ReactDOM.render(<Provider></Provider>, root)
+ReactDOM.render(
+	<Provider store={Store}>
+		<App />
+	</Provider>,
+	root
+)

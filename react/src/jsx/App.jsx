@@ -1,5 +1,8 @@
 import React from "react"
-import { connect } from "redux"
+import { connect } from "react-redux"
+import { Container } from "@material-ui/core"
+import SearchForm from "./SearchForm"
+import Header from "./Header"
 
 class App extends React.Component {
 	constructor(props) {
@@ -7,7 +10,15 @@ class App extends React.Component {
 	}
 
 	render() {
-		return <div></div>
+		return (
+			<div>
+				<Header />
+				<Container>
+					<SearchForm />
+					<div id="book-list" />
+				</Container>
+			</div>
+		)
 	}
 }
 
