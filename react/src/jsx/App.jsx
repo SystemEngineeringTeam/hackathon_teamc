@@ -1,7 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
 import { Container } from "@material-ui/core"
-import SearchForm from "./SearchForm"
+import SearchForm from "./Search/SearchForm"
 import Header from "./Header"
 
 class App extends React.Component {

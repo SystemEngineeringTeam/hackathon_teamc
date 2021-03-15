@@ -1,9 +1,9 @@
 import React from "react"
 import { TextField, Button, Grid } from "@material-ui/core"
-import Store, { searchBook } from "./Store"
+import Store, { searchBook } from "../Store"
 import { connect } from "react-redux"
 import ReactDOM from "react-dom"
-import Book from "./Book"
+import Book from "../Book"
 
 class SearchForm extends React.Component {
 	constructor(props) {

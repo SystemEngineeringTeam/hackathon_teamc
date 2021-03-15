@@ -11,9 +11,7 @@ class Header extends React.Component {
 		return (
 			<AppBar position="static">
 				<Toolbar>
-					<IconButton color="inherit">
-						<Menu></Menu>
-					</IconButton>
+					<IconButton color="inherit"><Menu></Menu></IconButton>
 					<Typography variant="h6">App</Typography>
 				</Toolbar>
 			</AppBar>
