@@ -1,0 +1,338 @@
+swagger: "2.0"
+info:
+  version: "1.1"
+  title: " "
+  description: "部室の入退室管理用API"
+
+paths:
+  /book:
+    get:
+      tags:
+        - "book"
+      summary: "本の一覧"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              type: "object"
+              properties:
+                id:
+                  type: "integer"
+                title:
+                  type: "string"
+                author:
+                  type: "string"
+                publisher:
+                  type: "string"
+                publishYear:
+                  type: "string"
+                cover:
+                  type: "string"
+                tags:
+                  type: "array"
+                  items:
+                    type: "string"
+
+    post:
+      tags:
+        - "book"
+      summary: "本の登録"
+      description: ""
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              title:
+                type: "string"
+              author:
+                type: "string"
+              publisher:
+                type: "string"
+              publishYear:
+                type: "string"
+              cover:
+                type: "string"
+      responses:
+        200:
+          description: "response"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                format: "register complete"
+    delete:
+      tags:
+        - "book"
+      summary: "本の削除"
+      description: ""
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              bookID:
+                type: "integer"
+                format: "[0-9]"
+      responses:
+        200:
+          description: "response"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+
+    put:
+      tags:
+        - "book"
+      summary: "本の情報更新"
+      description: ""
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          description: "response"
+          schema:
+            type: "object"
+
+            properties:
+              id:
+                type: "integer"
+              title:
+                type: "string"
+              author:
+                type: "string"
+              publisher:
+                type: "string"
+              publishYear:
+                type: "string"
+              cover:
+                type: "string"
+              tags:
+                type: "array"
+                items:
+                  type: "string"
+      responses:
+        200:
+          description: OK
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+
+  /lend:
+    post:
+      tags:
+        - "lend"
+      summary: "本の貸出"
+      description: ""
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              bookID:
+                type: integer
+              email:
+                type: "string"
+      responses:
+        200:
+          description: "response"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                format: "register complete"
+
+    put:
+      tags:
+        - "lend"
+      summary: "本の返却"
+      description: ""
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          description: "response"
+          schema:
+            type: "object"
+            properties:
+              bookID:
+                type: integer
+      responses:
+        200:
+          description: OK
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+
+  /user:
+    get:
+      tags:
+        - "user"
+      summary: "ユーザーの情報を取得"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          description: "response"
+          schema:
+            type: "object"
+            properties:
+              email:
+                type: "string"
+
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              type: "object"
+              properties:
+                email:
+                  type: "string"
+                list:
+                  type: "array"
+                  items:
+                    type: "integer"
+
+    post:
+      tags:
+        - "user"
+      summary: "ユーザーの登録"
+      description: ""
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              email:
+                type: "string"
+                format: "string"
+              password:
+                type: "string"
+                format: ""
+              name:
+                type: "string"
+                format: "yyyy-dddd"
+      responses:
+        200:
+          description: "response"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                format: "register complete"
+
+    put:
+      tags:
+        - "user"
+      summary: "登録情報の更新"
+      description: ""
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          description: "response"
+          schema:
+            type: "object"
+            properties:
+              email:
+                type: "string"
+                format: "string"
+              password:
+                type: "string"
+                format: ""
+              name:
+                type: "string"
+                format: "yyyy-dddd"
+      responses:
+        200:
+          description: OK
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+
+  /login:
+    post:
+      tags:
+        - "login"
+      summary: "ログイン"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          description: "response"
+          schema:
+            type: "object"
+            properties:
+              email:
+                type: "string"
+                format: "string"
+              password:
+                type: "string"
+                format: ""
+
+      responses:
+        200:
+          description: OK
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
