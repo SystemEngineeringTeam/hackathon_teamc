@@ -1,0 +1,23 @@
+version: "3"
+services:
+  mariadb:
+    build: ./mariadb
+    container_name: app_mariadb
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: hoge
+      MYSQL_PASSWORD: hogehoge
+
+  api:
+    build: ./java
+    container_name: app_api
+    ports:
+      - 8080:80
+    command:
+      - sh
+      - /wait/wait
+      - java
+      - Main
