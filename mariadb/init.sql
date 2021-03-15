@@ -6,8 +6,7 @@ create table books(
     author varchar(16),
     publisher varchar(16),
     pyear int,
-    cover_url varchar(256),
-    foreign key (lend_user) references users(id) on delete cascade,
+    cover_url varchar(256)
 );
 
 create table users(
