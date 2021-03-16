@@ -1,10 +1,11 @@
 
 package api;
-
 import booksql.*;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+//import com.fasterxml.jackson.core.JsonProcessingException;
+//import com.fasterxml.jackson.databind.ObjectMapper;
 //import database.src.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,28 +53,27 @@ public class BookHandler implements HttpHandler {
         // (ここでは Java 14 から正式導入された Switch Expressions と
         //  Java 14 でプレビュー機能として使えるヒアドキュメント的な Text Blocks 機能を使ってみる)
 
-
-            if (t.getRequestMethod().toLowerCase(Locale.ROOT).equals("get")) {
+        switch(t.getRequestMethod().toLowerCase(Locale.ROOT)){
+            case "get":
                 ArrayList<BooksData>  Get = SelectBookSql.selectbooksql();
 
+//                ObjectMapper mapper = new ObjectMapper();
+//                String json = mapper.writeValueAsString(hoge);
+//
+//                System.out.println(json);
 
-            }
-            else if(t.getRequestMethod().toLowerCase(Locale.ROOT).equals("post")) {
-                String title ="";
-                String author ="";
-                String publisher = "";
-                String publishYear = "";
-                String cover = "";
+            case "post":
+              BooksData book =  new BooksData();
 
-                 int post = AddBookSql.addbooksql(title, author, publisher, publishYear, cover);
+                int post = AddBookSql.addbooksql(book);
 
 
-            }
-            else if(t.getRequestMethod().toLowerCase(Locale.ROOT).equals("delete")) {
+
+            case "delete":
                 int id = 0;
                 int delete = DeleteBookSql.deletebooksql(id);
-            }
-            else if(t.getRequestMethod().toLowerCase(Locale.ROOT).equals("put")) {
+
+            case "put":
                 String title ="";
                 String author ="";
                 String publisher = "";
@@ -83,8 +83,7 @@ public class BookHandler implements HttpHandler {
                 String tags[] = new String[5];
                 int put = UpdateBookSql.updatebooksql(id,title,author,publisher,publishYear,cover,tags);
 
-            }
-
+        }
 
             Headers resHeaders = t.getResponseHeaders();
             resHeaders.set("Content-Type", "application/json");
