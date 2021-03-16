@@ -4,8 +4,8 @@ import booksql.*;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-//import com.fasterxml.jackson.core.JsonProcessingException;
-//import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 //import database.src.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +25,7 @@ public class BookHandler implements HttpHandler {
 
     // HTTP リクエストを処理する
     public void handle(HttpExchange t) throws IOException {
+        String resBody = "";
         System.out.println("**************************************************");
 
         // 開始行を取得
@@ -57,31 +58,37 @@ public class BookHandler implements HttpHandler {
             case "get":
                 ArrayList<BooksData>  Get = SelectBookSql.selectbooksql();
 
-//                ObjectMapper mapper = new ObjectMapper();
-//                String json = mapper.writeValueAsString(hoge);
+
+                ObjectMapper mapper = new ObjectMapper();
+                resBody = mapper.writeValueAsString(Get);
+                resBody = "[{\"id\": 0,\"title\": \"string\",\"author\": \"string\",\"publisher\": \"string\",\"publishYear\": \"string\",\"cover\": \"string\",\"tags\": [\"string\"]}]";
+                System.out.println(resBody);
+                break;
+
+            default:
+
+//            case "post":
+//              BooksData book =  new BooksData();
 //
-//                System.out.println(json);
-
-            case "post":
-              BooksData book =  new BooksData();
-
-                int post = AddBookSql.addbooksql(book);
-
-
-
-            case "delete":
-                int id = 0;
-                int delete = DeleteBookSql.deletebooksql(id);
-
-            case "put":
-                String title ="";
-                String author ="";
-                String publisher = "";
-                String publishYear = "";
-                String cover = "";
-                int id = 0;
-                String tags[] = new String[5];
-                int put = UpdateBookSql.updatebooksql(id,title,author,publisher,publishYear,cover,tags);
+//                int post = AddBookSql.addbooksql(book);
+//                break;
+//
+//
+//
+//            case "delete":
+//                int id = 0;
+//                int delete = DeleteBookSql.deletebooksql(id);
+//            break;
+//
+//            case "put":
+//                String title ="";
+//                String author ="";
+//                String publisher = "";
+//                String publishYear = "";
+//                String cover = "";
+//                int id = 0;
+//                String tags[] = new String[5];
+//                int put = UpdateBookSql.updatebooksql(id,title,author,publisher,publishYear,cover,tags);
 
         }
 
@@ -109,6 +116,6 @@ public class BookHandler implements HttpHandler {
 
         }
     }
-}
+
 
 
