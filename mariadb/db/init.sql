@@ -31,7 +31,7 @@ create table book_tags(
 create table rental_lists(
     book_id int not null,
     user_id int not null,
-    deadline data not null,
+    deadline date not null,
     lend_flag tinyint not null,
     foreign key (book_id) references books(id) on delete cascade,
     foreign key (user_id) references users(id) on delete cascade
