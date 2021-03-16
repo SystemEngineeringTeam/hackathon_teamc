@@ -5,7 +5,7 @@ create table books(
     title varchar(128) not null,
     author varchar(16),
     publisher varchar(16),
-    pyear int,
+    publisheryear int,
     cover_url varchar(256)
 );
 
@@ -28,7 +28,7 @@ create table book_tags(
     foreign key (tags_id) references tags(id) on delete cascade
 );
 
-create table rental_list(
+create table rental_lists(
     book_id int not null,
     user_id int not null,
     deadline data not null,
