@@ -27,8 +27,10 @@ public class databasetest {
                 }
                 break;
             case 2:
-                String[] tag = {"ラノベ","戦記"};
-                ans = UpdateBookSql.updatebooksql(1,"ようじょちぇんき","かるろ・ぜん", "カドカワ","2010",null,tag);
+                BooksData book1 = new BooksData();
+                book1.setBooksData(1,"ようじょちぇんき","かるろ・ぜん", "カドカワ","2010",null);
+                book1.settags("ラノベ,戦記");
+                ans = UpdateBookSql.updatebooksql(book1);
                 if(ans == 1){ System.out.println("updatebook complete"); }
                 break;
             case 3:
