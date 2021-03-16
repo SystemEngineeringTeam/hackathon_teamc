@@ -12,7 +12,7 @@ public class SelectBookSql {
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
                     "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
-            String dt1 = "SELECT *" +
+            String dt1 = "SELECT * " +
                             "FROM books;";
             PreparedStatement sql = conn.prepareStatement(dt1);
             ResultSet hrs = sql.executeQuery();
@@ -25,9 +25,9 @@ public class SelectBookSql {
                         hrs.getString("publisheryear"),
                         hrs.getString("title")
                 );
-                String dt2 = "SELECT tags_detail" +
-                        "FROM tags,books,book_tags" +
-                        "WHERE tags.id = book_tags.tags_id" +
+                String dt2 = "SELECT tags_detail " +
+                        "FROM tags,books,book_tags " +
+                        "WHERE tags.id = book_tags.tags_id " +
                         "AND book_tags.book_id = ?;";
                 sql = conn.prepareStatement(dt2);
                 sql.setInt(1,hrs.getInt("id"));

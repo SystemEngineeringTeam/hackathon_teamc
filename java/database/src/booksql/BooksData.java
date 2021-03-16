@@ -8,7 +8,7 @@ public class BooksData {
     public String publisher;
     public String pyear;
     public String cover_url;
-    public String tags;
+    public String[] tags;
 
     public BooksData(int id,String title,String author,String publisher,String pyear,String cover_url){
         this.id = id;
@@ -19,6 +19,6 @@ public class BooksData {
         this.cover_url = cover_url;
     }
     public void addtags(String tags){
-        this.tags = tags;
+        this.tags = tags.split(",",0);
     }
 }

@@ -11,8 +11,8 @@ public class SelectUserSql {
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
                     "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
-            String dt = "SELECT *" +
-                            "FROM users" +
+            String dt = "SELECT * " +
+                            "FROM users " +
                             "WHERE mailaddress = ?;";
             PreparedStatement sql = conn.prepareStatement(dt);
             sql.setString(1,eml);

@@ -11,9 +11,9 @@ public class UpdateLendSql {
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
                     "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
-            String dt = "UPDATE rental_lists" +
-                            "SET lend_flag" +
-                            "WHERE book_id = ?" +
+            String dt = "UPDATE rental_lists " +
+                            "SET lend_flag " +
+                            "WHERE book_id = ? " +
                             "AND lend_flag = 1;";
             PreparedStatement sql = conn.prepareStatement(dt);
             sql.setInt(1,bid);
