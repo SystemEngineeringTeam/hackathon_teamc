@@ -3,7 +3,7 @@ package booksql;
 import java.sql.*;
 
 public class AddBookSql {
-    public int AddBookSql(String ttl,String thr,String pblshr,String pyr,String cvr){
+    public static int AddBookSql(String ttl,String thr,String pblshr,String pyr,String cvr){
         Connection conn = null;
         Statement stmt = null;
         int flag = 0;

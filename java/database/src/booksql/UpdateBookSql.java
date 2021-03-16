@@ -3,7 +3,7 @@ package booksql;
 import java.sql.*;
 
 public class UpdateBookSql {
-    public int updatebooksql(int id,String ttl,String thr,String pblshr,String pblshryr,String cvr){
+    public static int updatebooksql(int id,String ttl,String thr,String pblshr,String pblshryr,String cvr){
 
         Connection conn = null;
         Statement stmt = null;

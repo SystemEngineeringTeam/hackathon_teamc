@@ -3,7 +3,7 @@ package usersql;
 import java.sql.*;
 
 public class UpdateUser {
-    public int updateuser(String nm, String ml, String pss){
+    public static int updateuser(String nm, String ml, String pss){
         Connection conn = null;
         Statement stmt = null;
         int flag = 0;
