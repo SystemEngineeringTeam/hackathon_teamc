@@ -2,22 +2,29 @@ package api.src.usersql;
 
 import java.sql.*;
 
-public class SelectUserSql {
-    public UsersData selectusersql(String eml){
+public class UpdateUser {
+    public int updateuser(String nm, String ml, String pss){
         Connection conn = null;
         Statement stmt = null;
-        UsersData rtn = null;
+        int flag = 0;
         try{
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
                     "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
-            String dt = "SELECT *" +
-                            "FROM users" +
-                            "WHERE mailaddress = ?;";
+            String dt = "UPDATE users" +
+                            "SET name = ?, mailaddress = ?,pass = ?" +
+                            "WHERE name = ?" +
+                            "OR mailaddress = ?" +
+                            "OR pass = ?";
             PreparedStatement sql = conn.prepareStatement(dt);
-            sql.setString(1,eml);
-            ResultSet hrs = sql.executeQuery();
-            rtn.AddData(hrs.getString("name"),hrs.getString("mailaddress"),hrs.getString("pass"));
+            sql.setString(1,nm);
+            sql.setString(4,nm);
+            sql.setString(2,ml);
+            sql.setString(5,ml);
+            sql.setString(3,pss);
+            sql.setString(6,pss);
+            int hrs = sql.executeUpdate();
+            if (hrs == 1){ flag = 1; }
         } catch(Exception e){
             e.printStackTrace();
         } finally {
@@ -35,6 +42,6 @@ public class SelectUserSql {
                 se.printStackTrace();
             }
         }
-        return rtn;
+        return flag;
     }
 }

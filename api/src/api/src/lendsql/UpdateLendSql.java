@@ -1,23 +1,24 @@
-package api.src.usersql;
+package api.src.lendsql;
 
 import java.sql.*;
 
-public class SelectUserSql {
-    public UsersData selectusersql(String eml){
+public class UpdateLendSql {
+    public static int updatelendsql(int bid){
         Connection conn = null;
         Statement stmt = null;
-        UsersData rtn = null;
+        int flag = 0;
         try{
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
                     "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
-            String dt = "SELECT *" +
-                            "FROM users" +
-                            "WHERE mailaddress = ?;";
+            String dt = "UPDATE rental_lists" +
+                            "SET lend_flag" +
+                            "WHERE book_id = ?" +
+                            "AND lend_flag = 1;";
             PreparedStatement sql = conn.prepareStatement(dt);
-            sql.setString(1,eml);
-            ResultSet hrs = sql.executeQuery();
-            rtn.AddData(hrs.getString("name"),hrs.getString("mailaddress"),hrs.getString("pass"));
+            sql.setInt(1,bid);
+            int hrs = sql.executeUpdate();
+            if (hrs == 1){ flag = 1; }
         } catch(Exception e){
             e.printStackTrace();
         } finally {
@@ -35,6 +36,6 @@ public class SelectUserSql {
                 se.printStackTrace();
             }
         }
-        return rtn;
+        return flag;
     }
 }

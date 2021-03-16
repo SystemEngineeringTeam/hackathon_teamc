@@ -1,9 +1,9 @@
-package booksql;
+package api.src.booksql;
 
 import java.sql.*;
 
 public class UpdateBookSql {
-    public int updatebooksql(int id,String ttl,String thr,String pblshr,String pblshryr,String cvr){
+    public  int updatebooksql(int id,String ttl,String thr,String pblshr,String pblshryr,String cvr){
 
         Connection conn = null;
         Statement stmt = null;
