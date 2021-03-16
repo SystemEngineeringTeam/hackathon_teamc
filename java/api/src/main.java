@@ -4,7 +4,7 @@ import api.UserHandler;
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import api.*;
+
 public class main {
 
     public static void main(String args[]) throws IOException {
