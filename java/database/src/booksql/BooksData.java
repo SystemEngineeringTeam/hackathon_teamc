@@ -10,7 +10,7 @@ public class BooksData {
     public String cover_url;
     public String[] tags;
 
-    public BooksData(int id,String title,String author,String publisher,String pyear,String cover_url){
+    public void setBooksData(int id,String title,String author,String publisher,String pyear,String cover_url){
         this.id = id;
         this.title = title;
         this.author = author;
@@ -18,7 +18,7 @@ public class BooksData {
         this.pyear = pyear;
         this.cover_url = cover_url;
     }
-    public void addtags(String tags){
+    public void settags(String tags){
         this.tags = tags.split(",",0);
     }
 }

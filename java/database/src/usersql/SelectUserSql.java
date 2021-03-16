@@ -17,7 +17,7 @@ public class SelectUserSql {
             PreparedStatement sql = conn.prepareStatement(dt);
             sql.setString(1,eml);
             ResultSet hrs = sql.executeQuery();
-            rtn.AddData(hrs.getString("name"),hrs.getString("mailaddress"),hrs.getString("pass"));
+            rtn.SetData(hrs.getString("name"),hrs.getString("mailaddress"),hrs.getString("pass"));
         } catch(Exception e){
             e.printStackTrace();
         } finally {

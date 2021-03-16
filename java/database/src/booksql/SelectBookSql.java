@@ -17,14 +17,14 @@ public class SelectBookSql {
             PreparedStatement sql = conn.prepareStatement(dt1);
             ResultSet hrs = sql.executeQuery();
             while (hrs.next()){
-                BooksData ind = new BooksData(
+                BooksData ind = new BooksData ();
+                ind.setBooksData(
                         hrs.getInt("id"),
                         hrs.getString("title"),
                         hrs.getString("author"),
                         hrs.getString("publisher"),
                         hrs.getString("publisheryear"),
-                        hrs.getString("title")
-                );
+                        hrs.getString("title"));
                 String dt2 = "SELECT tags_detail " +
                         "FROM tags,books,book_tags " +
                         "WHERE tags.id = book_tags.tags_id " +
@@ -37,7 +37,7 @@ public class SelectBookSql {
                 while (tmp.next()){
                     st.append(","+tmp.getString("tags_detail"));
                 }
-                ind.addtags(new String(st));
+                ind.settags(new String(st));
                 rtn.add(ind);
             }
         } catch(Exception e){
