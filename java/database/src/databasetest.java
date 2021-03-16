@@ -15,7 +15,9 @@ public class databasetest {
         int ans;
         switch (test){
             case 0:
-                ans = AddBookSql.addbooksql("幼女戦記","カルロ・ゼン","KADOKAWA","","");
+                BooksData book = new BooksData();
+                book.setBooksData(0,"幼女戦記","カルロ・ゼン","KADOKAWA",null,null);
+                ans = AddBookSql.addbooksql(book);
                 if(ans == 1){ System.out.println("addbook complete"); }
                 break;
             case 1:
@@ -26,7 +28,7 @@ public class databasetest {
                 break;
             case 2:
                 String[] tag = {"ラノベ","戦記"};
-                ans = UpdateBookSql.updatebooksql(1,"ようじょちぇんき","かるろ・ぜん", "カドカワ","2010","",tag);
+                ans = UpdateBookSql.updatebooksql(1,"ようじょちぇんき","かるろ・ぜん", "カドカワ","2010",null,tag);
                 if(ans == 1){ System.out.println("updatebook complete"); }
                 break;
             case 3:

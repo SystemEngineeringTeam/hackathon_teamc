@@ -23,7 +23,7 @@ public class SelectBookSql {
                         hrs.getString("title"),
                         hrs.getString("author"),
                         hrs.getString("publisher"),
-                        hrs.getString("publisheryear"),
+                        hrs.getString("publishyear"),
                         hrs.getString("title"));
                 String dt2 = "SELECT tags_detail " +
                         "FROM tags,books,book_tags " +
