@@ -1,4 +1,4 @@
-package api.src.booksql;
+package booksql;
 
 import java.sql.*;
 import java.util.ArrayList;

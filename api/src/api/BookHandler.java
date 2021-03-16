@@ -1,6 +1,7 @@
 
 package api;
 
+import booksql.*;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -16,7 +17,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
-import api.src.booksql.*;
+
 //import java.util.ArrayList;
 
 public class BookHandler implements HttpHandler {
@@ -79,9 +80,8 @@ public class BookHandler implements HttpHandler {
                 String publishYear = "";
                 String cover = "";
                 int id = 0;
-                ArrayList<String> tags = new ArrayList<>();
-                ArrayList<BooksData>  put = UpdateBookSql.updatebooksql(id,title,author,publisher,publishYear,cover,
-                        tags);
+                String tags[] = new String[5];
+                int put = UpdateBookSql.updatebooksql(id,title,author,publisher,publishYear,cover,tags);
 
             }
 

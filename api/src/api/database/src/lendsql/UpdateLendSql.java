@@ -1,9 +1,9 @@
-package api.src.usersql;
+package lendsql;
 
 import java.sql.*;
 
-public class UpdateUser {
-    public int updateuser(String nm, String ml, String pss){
+public class UpdateLendSql {
+    public static int updatelendsql(int bid){
         Connection conn = null;
         Statement stmt = null;
         int flag = 0;
@@ -11,18 +11,12 @@ public class UpdateUser {
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
                     "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
-            String dt = "UPDATE users" +
-                            "SET name = ?, mailaddress = ?,pass = ?" +
-                            "WHERE name = ?" +
-                            "OR mailaddress = ?" +
-                            "OR pass = ?";
+            String dt = "UPDATE rental_lists" +
+                            "SET lend_flag" +
+                            "WHERE book_id = ?" +
+                            "AND lend_flag = 1;";
             PreparedStatement sql = conn.prepareStatement(dt);
-            sql.setString(1,nm);
-            sql.setString(4,nm);
-            sql.setString(2,ml);
-            sql.setString(5,ml);
-            sql.setString(3,pss);
-            sql.setString(6,pss);
+            sql.setInt(1,bid);
             int hrs = sql.executeUpdate();
             if (hrs == 1){ flag = 1; }
         } catch(Exception e){

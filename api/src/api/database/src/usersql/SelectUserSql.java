@@ -1,26 +1,23 @@
-package api.src.loginsql;
+package usersql;
 
 import java.sql.*;
 
-public class LoginSql {
-    public int loginsql(String eml,String psswrd){
+public class SelectUserSql {
+    public static UsersData selectusersql(String eml){
         Connection conn = null;
         Statement stmt = null;
-        int flag = 0;
+        UsersData rtn = null;
         try{
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
                     "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
-            String dt = "SELECT COUNT(*) AS judg" +
+            String dt = "SELECT *" +
                             "FROM users" +
-                            "WHERE mailaddress = ?" +
-                            "AND pass = ?;";
+                            "WHERE mailaddress = ?;";
             PreparedStatement sql = conn.prepareStatement(dt);
             sql.setString(1,eml);
-            sql.setString(2,psswrd);
             ResultSet hrs = sql.executeQuery();
-            flag = hrs.getInt("judg");
-
+            rtn.AddData(hrs.getString("name"),hrs.getString("mailaddress"),hrs.getString("pass"));
         } catch(Exception e){
             e.printStackTrace();
         } finally {
@@ -38,6 +35,6 @@ public class LoginSql {
                 se.printStackTrace();
             }
         }
-        return flag;
+        return rtn;
     }
 }

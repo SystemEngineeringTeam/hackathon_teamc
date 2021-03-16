@@ -1,20 +1,24 @@
+
 package api;
 
+import booksql.*;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-//import database.src.*;
+import loginsql.LoginSql;
+import database.src.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-//import java.sql.Array;
-//import java.sql.ResultSet;
+import java.sql.Array;
+import java.sql.ResultSet;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Locale;
-//import java.util.ArrayList;
+import java.util.ArrayList;
 
 public class LoginHandler implements HttpHandler {
 
@@ -49,7 +53,12 @@ public class LoginHandler implements HttpHandler {
         //  Java 14 でプレビュー機能として使えるヒアドキュメント的な Text Blocks 機能を使ってみる)
 
 
-        // Content-Length 以外のレスポンスヘッダを設定
+        if (t.getRequestMethod().toLowerCase(Locale.ROOT).equals("get")) {
+            String email = "";
+            String password = "";
+            int get = LoginSql.loginsql(email, password);
+        }
+
         Headers resHeaders = t.getResponseHeaders();
         resHeaders.set("Content-Type", "application/json");
         resHeaders.set("Last-Modified",
@@ -60,38 +69,19 @@ public class LoginHandler implements HttpHandler {
                         System.getProperty("java.vm.vendor") + " " +
                         System.getProperty("java.vm.version") + ")");
 
-        byte[] readData = new byte[20000];
-        is.read(readData);
 
-        String requestData = new String(readData, StandardCharsets.UTF_8);
-        if (requestData != null && requestData.length() > 0) {
+        // レスポンスヘッダを送信
+        int statusCode = 200;
+        long contentLength = resBody.getBytes(StandardCharsets.UTF_8).length;
+        t.sendResponseHeaders(statusCode, contentLength);
 
-            System.out.println("=======リクエストデータ=======");
-            System.out.println(requestData);
-            System.out.println("=======リクエストデータ=======");
+        // レスポンスボディを送信
+        OutputStream os = t.getResponseBody();
+        os.write(resBody.getBytes());
+        os.close();
 
-            if (t.getRequestMethod().toLowerCase(Locale.ROOT).equals("login")){
-
-
-                if(t.getRequestMethod().toLowerCase(Locale.ROOT).equals("post")) {
-
-                }
-            }
-
-
-
-
-            // レスポンスヘッダを送信
-            int statusCode = 200;
-            long contentLength = resBody.getBytes(StandardCharsets.UTF_8).length;
-            t.sendResponseHeaders(statusCode, contentLength);
-
-            // レスポンスボディを送信
-            OutputStream os = t.getResponseBody();
-            os.write(resBody.getBytes());
-            os.close();
-
-        }
     }
 }
+}
+
 

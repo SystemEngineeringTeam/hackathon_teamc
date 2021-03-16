@@ -1,10 +1,9 @@
-package api.src.booksql;
+package booksql;
 
 import java.sql.*;
 
-public class UpdateBookSql {
-    public  int updatebooksql(int id,String ttl,String thr,String pblshr,String pblshryr,String cvr){
-
+public class AddBookSql {
+    public static int addbooksql(String ttl,String thr,String pblshr,String pyr,String cvr){
         Connection conn = null;
         Statement stmt = null;
         int flag = 0;
@@ -12,16 +11,14 @@ public class UpdateBookSql {
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
                     "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
-            String dt = "UPDATE books " +
-                            "SET title = ?, author = ?, publisher = ?, publisheryear = ?,cover_url = ?" +
-                            "WHERE id = ?;";
+            String dt = "INSERT INTO books(title,author,publisher,publisheryear,cover_url) " +
+                            "VALUES (?,?,?,?,?);";
             PreparedStatement sql = conn.prepareStatement(dt);
             sql.setString(1,ttl);
             sql.setString(2,thr);
             sql.setString(3,pblshr);
-            sql.setString(4,pblshryr);
+            sql.setString(4,pyr);
             sql.setString(5,cvr);
-            sql.setInt(6,id);
             int hrs = sql.executeUpdate();
             if (hrs == 1){ flag = 1; }
         } catch(Exception e){

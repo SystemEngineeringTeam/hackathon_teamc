@@ -2,9 +2,12 @@
 package api;
 
 import api.src.lendsql.AddLendSql;
+import booksql.UpdateBookSql;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import lendsql.AddLendSql;
+import lendsql.UpdateLendSql;
 //import database.src.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,8 +20,8 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
-import api.src.booksql.*;
-import api.src.lendsql.*;
+
+
 //import java.util.ArrayList;
 
 public class LendHandler implements HttpHandler {
@@ -57,7 +60,7 @@ public class LendHandler implements HttpHandler {
         if (t.getRequestMethod().toLowerCase(Locale.ROOT).equals("post")) {
             int id = 0;
             String email ="";
-            int post = AddLendSql.addlentsql(id,email);
+            int post = AddLendSql.addlendsql(id,email);
 
 
 
@@ -65,7 +68,7 @@ public class LendHandler implements HttpHandler {
         else if(t.getRequestMethod().toLowerCase(Locale.ROOT).equals("put")) {
             int id = 0;
 
-            int put = UpdateBookSql.updatelendsql(id);
+            int put = UpdateLendSql.updatelendsql(id);
 
 
         }

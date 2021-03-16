@@ -1,4 +1,4 @@
-package api.src.lendsql;
+package lendsql;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class AddLendSql {
-    public static int addlentsql(int bid,String eml){
+    public static int addlendsql(int bid,String eml){
         int flag = 0;
         Connection conn = null;
         Statement stmt = null;

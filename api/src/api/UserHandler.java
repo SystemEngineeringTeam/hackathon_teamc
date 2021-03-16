@@ -1,8 +1,14 @@
+
 package api;
 
+import booksql.*;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import usersql.AddUser;
+import usersql.SelectUserSql;
+import usersql.UpdateUser;
+import usersql.UsersData;
 //import database.src.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +19,9 @@ import java.nio.charset.StandardCharsets;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Locale;
+
 //import java.util.ArrayList;
 
 public class UserHandler implements HttpHandler {
@@ -49,7 +57,29 @@ public class UserHandler implements HttpHandler {
         //  Java 14 でプレビュー機能として使えるヒアドキュメント的な Text Blocks 機能を使ってみる)
 
 
-        // Content-Length 以外のレスポンスヘッダを設定
+        if (t.getRequestMethod().toLowerCase(Locale.ROOT).equals("get")) {
+            String email = "";
+            UsersData Get = SelectUserSql.selectusersql(email);
+
+        }
+        else if(t.getRequestMethod().toLowerCase(Locale.ROOT).equals("post")) {
+            String email = "";
+            String password = "";
+            String name = "";
+
+            int post = AddUser.adduser(email,password,name);
+
+        }
+
+        else if(t.getRequestMethod().toLowerCase(Locale.ROOT).equals("put")) {
+            String email = "";
+            String password = "";
+            String name = "";
+            int put = UpdateUser.updateuser(email,password,name);
+
+        }
+
+
         Headers resHeaders = t.getResponseHeaders();
         resHeaders.set("Content-Type", "application/json");
         resHeaders.set("Last-Modified",
@@ -60,44 +90,20 @@ public class UserHandler implements HttpHandler {
                         System.getProperty("java.vm.vendor") + " " +
                         System.getProperty("java.vm.version") + ")");
 
-        byte[] readData = new byte[20000];
-        is.read(readData);
-
-        String requestData = new String(readData, StandardCharsets.UTF_8);
-        if (requestData != null && requestData.length() > 0) {
-
-            System.out.println("=======リクエストデータ=======");
-            System.out.println(requestData);
-            System.out.println("=======リクエストデータ=======");
-
-            if (t.getRequestMethod().toLowerCase(Locale.ROOT).equals("get")) {
-
-            }
-            else if(t.getRequestMethod().toLowerCase(Locale.ROOT).equals("post")) {
 
 
-            }
-            else if(t.getRequestMethod().toLowerCase(Locale.ROOT).equals("put")) {
+        // レスポンスヘッダを送信
+        int statusCode = 200;
+        long contentLength = resBody.getBytes(StandardCharsets.UTF_8).length;
+        t.sendResponseHeaders(statusCode, contentLength);
 
-            }
+        // レスポンスボディを送信
+        OutputStream os = t.getResponseBody();
+        os.write(resBody.getBytes());
+        os.close();
 
-
-
-
-
-            // レスポンスヘッダを送信
-            int statusCode = 200;
-            long contentLength = resBody.getBytes(StandardCharsets.UTF_8).length;
-            t.sendResponseHeaders(statusCode, contentLength);
-
-            // レスポンスボディを送信
-            OutputStream os = t.getResponseBody();
-            os.write(resBody.getBytes());
-            os.close();
-
-        }
     }
 }
-
+}
 
 

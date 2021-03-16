@@ -1,37 +1,27 @@
-package lendsql;
+package loginsql;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
-public class AddLendSql {
-    public int addlentsql(int bid,String eml){
-        int flag = 0;
+public class LoginSql {
+    public static int loginsql(String eml,String psswrd){
         Connection conn = null;
         Statement stmt = null;
+        int flag = 0;
         try{
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
                     "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
-            String dt1 = "SELECT id" +
+            String dt = "SELECT COUNT(*) AS judg" +
                             "FROM users" +
-                            "WHERE mailaddress = ?;";
-            PreparedStatement sql = conn.prepareStatement(dt1);
+                            "WHERE mailaddress = ?" +
+                            "AND pass = ?;";
+            PreparedStatement sql = conn.prepareStatement(dt);
             sql.setString(1,eml);
+            sql.setString(2,psswrd);
             ResultSet hrs = sql.executeQuery();
-            int uid = hrs.getInt("id");
-            String dt2 = "INSERT INTO rental_lists" +
-                            "VALUES(?,?,?,0);";
-            String str = new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
-            java.sql.Date ddln = java.sql.Date.valueOf(str);
+            flag = hrs.getInt("judg");
 
-            sql = conn.prepareStatement(dt2);
-            sql.setInt(1,bid);
-            sql.setInt(2,uid);
-            sql.setDate(3,ddln);
-
-        } catch(Exception e) {
+        } catch(Exception e){
             e.printStackTrace();
         } finally {
             try {
