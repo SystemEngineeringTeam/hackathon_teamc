@@ -13,7 +13,7 @@ public class LoginSql {
                     "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
             String dt = "SELECT COUNT(*) AS judg" +
                             "FROM users" +
-                            "WHERE mailaddress = ?" +
+                            "WHERE mailaddress = ? " +
                             "AND pass = ?;";
             PreparedStatement sql = conn.prepareStatement(dt);
             sql.setString(1,eml);

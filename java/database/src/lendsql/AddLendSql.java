@@ -1,12 +1,11 @@
 package lendsql;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class AddLendSql {
-    public static int addlentsql(int bid,String eml){
+    public static int addlendsql(int bid,String eml){
         int flag = 0;
         Connection conn = null;
         Statement stmt = null;
@@ -14,8 +13,8 @@ public class AddLendSql {
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
                     "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
-            String dt1 = "SELECT id" +
-                            "FROM users" +
+            String dt1 = "SELECT id " +
+                            "FROM users " +
                             "WHERE mailaddress = ?;";
             PreparedStatement sql = conn.prepareStatement(dt1);
             sql.setString(1,eml);
@@ -23,8 +22,11 @@ public class AddLendSql {
             int uid = hrs.getInt("id");
             String dt2 = "INSERT INTO rental_lists" +
                             "VALUES(?,?,?,0);";
-            String str = new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
-            java.sql.Date ddln = java.sql.Date.valueOf(str);
+            java.util.Date today = new Date();
+            Calendar clndr = Calendar.getInstance();
+            clndr.setTime(today);
+            clndr.add(Calendar.DATE, 14);
+            java.sql.Date ddln = new java.sql.Date(clndr.getTimeInMillis());
 
             sql = conn.prepareStatement(dt2);
             sql.setInt(1,bid);
