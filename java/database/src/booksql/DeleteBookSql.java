@@ -3,7 +3,7 @@ package booksql;
 import java.sql.*;
 
 public class DeleteBookSql {
-    public int deletebooksql(int id) {
+    public static int deletebooksql(int id) {
         Connection conn = null;
         Statement stmt = null;
         int flag = 0;

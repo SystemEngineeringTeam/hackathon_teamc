@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class AddLendSql {
-    public int addlentsql(int bid,String eml){
+    public static int addlentsql(int bid,String eml){
         int flag = 0;
         Connection conn = null;
         Statement stmt = null;

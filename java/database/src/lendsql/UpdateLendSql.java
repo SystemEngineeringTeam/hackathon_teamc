@@ -3,7 +3,7 @@ package lendsql;
 import java.sql.*;
 
 public class UpdateLendSql {
-    public int updatelendsql(int bid){
+    public static int updatelendsql(int bid){
         Connection conn = null;
         Statement stmt = null;
         int flag = 0;

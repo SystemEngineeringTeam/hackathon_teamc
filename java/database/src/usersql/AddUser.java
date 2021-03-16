@@ -3,7 +3,7 @@ package usersql;
 import java.sql.*;
 
 public class AddUser {
-    public int adduser(String ml,String psswrd,String nm){
+    public static int adduser(String ml,String psswrd,String nm){
         Connection conn = null;
         Statement stmt = null;
         int flag = 0;

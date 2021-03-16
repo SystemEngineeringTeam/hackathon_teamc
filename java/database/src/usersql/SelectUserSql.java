@@ -3,7 +3,7 @@ package usersql;
 import java.sql.*;
 
 public class SelectUserSql {
-    public UsersData selectusersql(String eml){
+    public static UsersData selectusersql(String eml){
         Connection conn = null;
         Statement stmt = null;
         UsersData rtn = null;

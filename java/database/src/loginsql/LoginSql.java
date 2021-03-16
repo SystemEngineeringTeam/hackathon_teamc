@@ -3,7 +3,7 @@ package loginsql;
 import java.sql.*;
 
 public class LoginSql {
-    public int loginsql(String eml,String psswrd){
+    public static int loginsql(String eml,String psswrd){
         Connection conn = null;
         Statement stmt = null;
         int flag = 0;

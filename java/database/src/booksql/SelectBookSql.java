@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class SelectBookSql {
-    public ArrayList<BooksData> selectbooksql(){
+    public static ArrayList<BooksData> selectbooksql(){
         Connection conn = null;
         Statement stmt = null;
         ArrayList<BooksData> rtn = new ArrayList<BooksData>();
