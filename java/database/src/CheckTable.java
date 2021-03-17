@@ -1,28 +1,20 @@
-package usersql;
-
 import java.sql.*;
 
-public class UpdateUser {
-    public static int updateuser(String nm, String ml, String pss){
+public class CheckTable {
+    public static void checktable(){
         Connection conn = null;
         Statement stmt = null;
-        int flag = 0;
         try{
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
                     "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
-            String dt = "UPDATE users " +
-                            "SET name = ?, mailaddress = ?,pass = ? " +
-                            "WHERE name = ? " +
-                            "OR mailaddress = ?;";
+            String dt = "SHOW TABLES FROM app_db";
             PreparedStatement sql = conn.prepareStatement(dt);
-            sql.setString(1,nm);
-            sql.setString(4,nm);
-            sql.setString(2,ml);
-            sql.setString(5,ml);
-            sql.setString(3,pss);
-            int hrs = sql.executeUpdate();
-            if (hrs == 1){ flag = 1; }
+            ResultSet hrs = sql.executeQuery();
+            if (hrs == null){ System.out.println("Table not found"); }
+            while (hrs.next()){
+                System.out.println(hrs.getString(1));
+            }
         } catch(Exception e){
             e.printStackTrace();
         } finally {
@@ -40,6 +32,5 @@ public class UpdateUser {
                 se.printStackTrace();
             }
         }
-        return flag;
     }
 }

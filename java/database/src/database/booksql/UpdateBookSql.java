@@ -1,4 +1,4 @@
-package booksql;
+package database.booksql;
 
 import java.sql.*;
 
@@ -13,7 +13,7 @@ public class UpdateBookSql {
             conn = DriverManager.getConnection(
                     "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
             String dt1 = "UPDATE books " +
-                            "SET title = ?, author = ?, publisher = ?, publisheryear = ?,cover_url = ?" +
+                            "SET title = ?, author = ?, publisher = ?, publishyear = ?,cover_url = ? " +
                             "WHERE id = ?;";
             PreparedStatement sql = conn.prepareStatement(dt1);
             sql.setString(1, book.title);
@@ -29,16 +29,15 @@ public class UpdateBookSql {
             sql = conn.prepareStatement(dlttg);
             sql.setInt(1,book.id);
             hrs = sql.executeUpdate();
-
             for (int i = 0;i < book.tags.length;i++){
                 String dt2 = "SELECT COUNT(*) AS judg " +
                         "FROM tags " +
-                        "WHERE tags_detail = '?';";
+                        "WHERE tags_detail = ?;";
                 sql = conn.prepareStatement(dt2);
                 sql.setString(1,book.tags[i]);
                 ResultSet jdg = sql.executeQuery();
 
-                if (jdg.getInt("judg") == 0){
+                if (jdg.next() && jdg.getInt("judg") == 0){
                     String addtg = "INSERT INTO tags(tags_detail) " +
                                     "VALUES (?);";
                     sql = conn.prepareStatement(addtg);
@@ -48,11 +47,14 @@ public class UpdateBookSql {
 
                 String slcttgid = "SELECT id " +
                                     "FROM tags " +
-                                    "WHERE tags detail = '?';";
+                                    "WHERE tags_detail = ?;";
                 sql = conn.prepareStatement(slcttgid);
                 sql.setString(1,book.tags[i]);
                 ResultSet tagid = sql.executeQuery();
-                int tid = tagid.getInt("id");
+                int tid = 0;
+                if (tagid.next()) {
+                    tid = tagid.getInt("id");
+                }
                 String btcnct = "INSERT INTO book_tags " +
                                     "VALUES(?,?);";
                 sql = conn.prepareStatement(btcnct);

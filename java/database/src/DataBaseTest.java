@@ -1,16 +1,14 @@
-import booksql.*;
-import lendsql.AddLendSql;
-import lendsql.UpdateLendSql;
-import loginsql.LoginSql;
-import usersql.AddUser;
-import usersql.SelectUserSql;
-import usersql.UpdateUser;
-import usersql.UsersData;
+import database.booksql.*;
+import database.lendsql.*;
+import database.loginsql.*;
+import database.usersql.*;
+
 
 import java.util.ArrayList;
 
-public class databasetest {
+public class DataBaseTest {
     public static void main(String args[]){
+        System.out.println("start");
         int test = 0;
         int ans;
         switch (test){
@@ -22,8 +20,8 @@ public class databasetest {
                 break;
             case 1:
                 ArrayList<BooksData> data = SelectBookSql.selectbooksql();
-                for(int i = 0;i < 1;i++){
-                    System.out.println(data.get(i));
+                for(int i = 0;i < data.size();i++){
+                    System.out.println(data.get(i).id+data.get(i).title );
                 }
                 break;
             case 2:
@@ -38,15 +36,15 @@ public class databasetest {
                 if(ans == 1){ System.out.println("deletebook complete"); }
                 break;
             case 4:
-                ans = AddUser.adduser("k20001","hoge","henoheno");
+                ans = AddUser.adduser("k20001","hoge","hegohego");
                 if(ans == 1){ System.out.println("adduser complete"); }
                 break;
             case 5:
                 UsersData data1 = SelectUserSql.selectusersql("k20001");
-                System.out.println(data1);
+                System.out.println(data1.name);
                 break;
             case 6:
-                ans = UpdateUser.updateuser("hogehoge","k20001","hoge");
+                ans = UpdateUser.updateuser("honehone","k20001","hoge");
                 if(ans == 1){ System.out.println("updateuser complete"); }
                 break;
             case 7:
@@ -58,7 +56,7 @@ public class databasetest {
                 if(ans == 1){ System.out.println("updatelend complete"); }
                 break;
             case 9:
-                ans = LoginSql.loginsql("K20008","hoge");
+                ans = LoginSql.loginsql("K20001","hoge");
                 if(ans == 1){ System.out.println("login complete"); }
                 break;
             default:
