@@ -13,32 +13,21 @@ class UserForm extends React.Component {
 		this.doSubmit = this.doSubmit.bind(this)
 	}
 
-	doSubmit(e) {
+	async doSubmit(e) {
 		e.preventDefault()
 		let email = document.querySelector("#email").value
 		let password = document.querySelector("#password").value
-		let passwordChecker = document.querySelector("#password-check").value
+		password = createHash().update(password).digest("hex")
 
-		let re = new RegExp("^[a-zA-Z0-9.?/-]{8,24}$")
-		if (re.test(password)) {
+		// wip post処理かく
+		// await axios.post()
+
+		if (password) {
 			this.setState({
-				html: (
-					<Typography color="primary" align="center">
-						ユーザー登録が完了しました． <br />
-						メールを確認してください．
-					</Typography>
-				),
+				html: <Typography color="primary" align="center"></Typography>,
 			})
 
-			if (password != passwordChecker) {
-				this.setState({
-					html: (
-						<Typography color="error" align="center">
-							パスワードが一致しません
-						</Typography>
-					),
-				})
-			}
+			// wip ログインできたらcookieに必要な情報を保存
 		} else {
 			this.setState({
 				html: (
@@ -48,8 +37,6 @@ class UserForm extends React.Component {
 				),
 			})
 		}
-
-		password = createHash().update(password).digest("hex")
 	}
 
 	render() {
@@ -105,24 +92,8 @@ class UserForm extends React.Component {
 										alignContent="center"
 										justify="center"
 									>
-										<TextField
-											type="password"
-											placeholder="パスワード(確認用)"
-											variant="outlined"
-											id="password-check"
-											required
-											minLength="8"
-										></TextField>
-									</Grid>
-									<Grid
-										container
-										item
-										xs={12}
-										alignContent="center"
-										justify="center"
-									>
 										<Button type="submit" variant="contained">
-											SignUp
+											SignIn
 										</Button>
 									</Grid>
 								</form>
