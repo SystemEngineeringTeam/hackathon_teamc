@@ -1,4 +1,4 @@
-package usersql;
+package database.src.usersql;
 
 public class UsersData {
     public String name;

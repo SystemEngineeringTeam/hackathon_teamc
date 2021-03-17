@@ -1,9 +1,9 @@
-package loginsql;
+package database.src.usersql;
 
 import java.sql.*;
 
-public class LoginSql {
-    public static int loginsql(String eml,String psswrd){
+public class AddUser {
+    public static int adduser(String ml,String psswrd,String nm){
         Connection conn = null;
         Statement stmt = null;
         int flag = 0;
@@ -11,15 +11,14 @@ public class LoginSql {
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
                     "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
-            String dt = "SELECT COUNT(*) AS judg" +
-                            "FROM users" +
-                            "WHERE mailaddress = ? " +
-                            "AND pass = ?;";
+            String dt = "INSERT INTO users(name,mailaddress,pass) " +
+                            "VALUES (?,?,?);";
             PreparedStatement sql = conn.prepareStatement(dt);
-            sql.setString(1,eml);
+            sql.setString(1,nm);
             sql.setString(2,psswrd);
-            ResultSet hrs = sql.executeQuery();
-            flag = hrs.getInt("judg");
+            sql.setString(3,ml);
+            int hrs = sql.executeUpdate();
+            if (hrs == 1){ flag = 1; }
 
         } catch(Exception e){
             e.printStackTrace();

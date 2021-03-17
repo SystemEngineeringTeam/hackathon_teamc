@@ -1,27 +1,29 @@
 
 package api;
-import booksql.*;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-//import database.src.*;
+import database.src.booksql.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-//import java.sql.Array;
-//import java.sql.ResultSet;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
 
+//import database.src.*;
+//import java.sql.Array;
+//import java.sql.ResultSet;
+
 //import java.util.ArrayList;
 
-public class BookHandler implements HttpHandler {
+public class BookHandler implements HttpHandler{
 
     // HTTP リクエストを処理する
     public void handle(HttpExchange t) throws IOException {
@@ -65,30 +67,36 @@ public class BookHandler implements HttpHandler {
                 System.out.println(resBody);
                 break;
 
-            default:
 
-//            case "post":
-//              BooksData book =  new BooksData();
+
+            case "post":
+                BooksData book = new BooksData();
+
+                int post = AddBookSql.addbooksql(book);
+
+                mapper = new ObjectMapper();
+                resBody = mapper.writeValueAsString(post);
+                //resBody = "[{\"id\": 0,\"title\": \"string\",\"author\": \"string\",\"publisher\": \"string\";
+                break;
 //
-//                int post = AddBookSql.addbooksql(book);
-//                break;
 //
 //
+            case "delete":
+                int id = 0;
+                int delete = DeleteBookSql.deletebooksql(id);
+                mapper = new ObjectMapper();
+                resBody = mapper.writeValueAsString(id);
+            break;
 //
-//            case "delete":
-//                int id = 0;
-//                int delete = DeleteBookSql.deletebooksql(id);
-//            break;
-//
-//            case "put":
-//                String title ="";
-//                String author ="";
-//                String publisher = "";
-//                String publishYear = "";
-//                String cover = "";
-//                int id = 0;
-//                String tags[] = new String[5];
-//                int put = UpdateBookSql.updatebooksql(id,title,author,publisher,publishYear,cover,tags);
+            case "put":
+                String title ="";
+                String author ="";
+                String publisher = "";
+                String publishYear = "";
+                String cover = "";
+                int id = 0;
+                String tags[] = new String[5];
+                int put = UpdateBookSql.updatebooksql(id,title,author,publisher,publishYear,cover,tags);
 
         }
 

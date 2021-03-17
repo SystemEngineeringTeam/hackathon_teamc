@@ -1,27 +1,24 @@
-package booksql;
+package database.src.booksql;
 
 import java.sql.*;
 
-public class AddBookSql {
-    public static int addbooksql(BooksData book){
+public class DeleteBookSql {
+    public static int deletebooksql(int id) {
         Connection conn = null;
         Statement stmt = null;
         int flag = 0;
-        try{
+        try {
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
                     "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
-            String dt = "INSERT INTO books(title,author,publisher,publisheryear,cover_url) " +
-                            "VALUES (?,?,?,?,?);";
+            String dt = "DElETE FROM books WHERE id = ?;";
             PreparedStatement sql = conn.prepareStatement(dt);
-            sql.setString(1, book.title);
-            sql.setString(2, book.author);
-            sql.setString(3, book.publisher);
-            sql.setString(4, book.pyear);
-            sql.setString(5, book.cover_url);
+            sql.setInt(1, id);
             int hrs = sql.executeUpdate();
-            if (hrs == 1){ flag = 1; }
-        } catch(Exception e){
+            if (hrs == 1) {
+                flag = 1;
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
@@ -41,3 +38,4 @@ public class AddBookSql {
         return flag;
     }
 }
+

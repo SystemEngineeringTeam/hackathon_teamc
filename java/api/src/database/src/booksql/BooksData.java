@@ -1,4 +1,4 @@
-package booksql;
+package database.src.booksql;
 
 public class BooksData {
 

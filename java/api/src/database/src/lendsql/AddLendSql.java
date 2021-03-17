@@ -1,4 +1,4 @@
-package lendsql;
+package database.src.lendsql;
 
 import java.sql.*;
 import java.util.Calendar;
