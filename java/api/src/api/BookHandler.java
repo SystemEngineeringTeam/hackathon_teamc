@@ -50,35 +50,40 @@ public class BookHandler implements HttpHandler {
             System.out.println(new String(b, StandardCharsets.UTF_8));
         }
 
+
         // レスポンスボディを構築
         // (ここでは Java 14 から正式導入された Switch Expressions と
         //  Java 14 でプレビュー機能として使えるヒアドキュメント的な Text Blocks 機能を使ってみる)
 
         switch(t.getRequestMethod().toLowerCase(Locale.ROOT)){
-            case "get":
-                ArrayList<BooksData>  Get = SelectBookSql.selectbooksql();
+//            case "get":
+//                ArrayList<BooksData>  Get = SelectBookSql.selectbooksql();
+//
+//
+//                ObjectMapper mapper = new ObjectMapper();
+//                resBody = mapper.writeValueAsString(Get);
+//                resBody = "[{\"id\": 0,\"title\": \"string\",\"author\": \"string\",\"publisher\": \"string\",\"publishYear\": \"string\",\"cover\": \"string\",\"tags\": [\"string\"]}]";
+//                System.out.println(resBody);
+//                break;
 
+            case "post":
+              BooksData book =  new BooksData();
+
+                int post = AddBookSql.addbooksql(book);
 
                 ObjectMapper mapper = new ObjectMapper();
-                resBody = mapper.writeValueAsString(Get);
-                resBody = "[{\"id\": 0,\"title\": \"string\",\"author\": \"string\",\"publisher\": \"string\",\"publishYear\": \"string\",\"cover\": \"string\",\"tags\": [\"string\"]}]";
+                resBody = mapper.writeValueAsString(post);
+                //resBody = "[{\"id\": 0,\"title\": \"string\",\"author\": \"string\",\"publisher\": \"string\",\"publishYear\": \"string\",\"cover\": \"string\",\"tags\": [\"string\"]}]";
                 System.out.println(resBody);
                 break;
-
             default:
 
-//            case "post":
-//              BooksData book =  new BooksData();
-//
-//                int post = AddBookSql.addbooksql(book);
-//                break;
-//
-//
-//
-//            case "delete":
-//                int id = 0;
-//                int delete = DeleteBookSql.deletebooksql(id);
-//            break;
+
+
+            case "delete":
+                int id = 0;
+                int delete = DeleteBookSql.deletebooksql(id);
+            break;
 //
 //            case "put":
 //                String title ="";
