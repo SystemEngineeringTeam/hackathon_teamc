@@ -1,9 +1,9 @@
-package usersql;
+package database.loginsql;
 
 import java.sql.*;
 
-public class UpdateUser {
-    public static int updateuser(String nm, String ml, String pss){
+public class LoginSql {
+    public static int loginsql(String eml,String psswrd){
         Connection conn = null;
         Statement stmt = null;
         int flag = 0;
@@ -11,18 +11,16 @@ public class UpdateUser {
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
                     "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
-            String dt = "UPDATE users " +
-                            "SET name = ?, mailaddress = ?,pass = ? " +
-                            "WHERE name = ? " +
-                            "OR mailaddress = ?;";
+            String dt = "SELECT COUNT(*) AS judg" +
+                            "FROM users" +
+                            "WHERE mailaddress = ? " +
+                            "AND pass = ?;";
             PreparedStatement sql = conn.prepareStatement(dt);
-            sql.setString(1,nm);
-            sql.setString(4,nm);
-            sql.setString(2,ml);
-            sql.setString(5,ml);
-            sql.setString(3,pss);
-            int hrs = sql.executeUpdate();
-            if (hrs == 1){ flag = 1; }
+            sql.setString(1,eml);
+            sql.setString(2,psswrd);
+            ResultSet hrs = sql.executeQuery();
+            flag = hrs.getInt("judg");
+
         } catch(Exception e){
             e.printStackTrace();
         } finally {

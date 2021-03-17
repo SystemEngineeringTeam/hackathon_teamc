@@ -1,19 +1,24 @@
+package database.booksql;
+
 import java.sql.*;
 
-public class testsql {
-    public static void testprint(){
+public class DeleteBookSql {
+    public static int deletebooksql(int id) {
         Connection conn = null;
         Statement stmt = null;
-        try{
+        int flag = 0;
+        try {
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
                     "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
-            String dt = "";
+            String dt = "DElETE FROM books WHERE id = ?;";
             PreparedStatement sql = conn.prepareStatement(dt);
-            ResultSet hrs = sql.executeQuery();
-
-
-        } catch(Exception e){
+            sql.setInt(1, id);
+            int hrs = sql.executeUpdate();
+            if (hrs == 1) {
+                flag = 1;
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
@@ -30,5 +35,7 @@ public class testsql {
                 se.printStackTrace();
             }
         }
+        return flag;
     }
 }
+

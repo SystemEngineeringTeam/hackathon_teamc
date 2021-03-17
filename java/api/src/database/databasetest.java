@@ -1,11 +1,13 @@
-import booksql.*;
-import lendsql.AddLendSql;
-import lendsql.UpdateLendSql;
-import loginsql.LoginSql;
-import usersql.AddUser;
-import usersql.SelectUserSql;
-import usersql.UpdateUser;
-import usersql.UsersData;
+package database;
+
+import database.booksql.*;
+import database.lendsql.AddLendSql;
+import database.lendsql.UpdateLendSql;
+import database.loginsql.LoginSql;
+import database.usersql.AddUser;
+import database.usersql.SelectUserSql;
+import database.usersql.UpdateUser;
+import database.usersql.UsersData;
 
 import java.util.ArrayList;
 

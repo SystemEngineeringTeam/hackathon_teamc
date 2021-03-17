@@ -1,26 +1,23 @@
-package booksql;
+package database.usersql;
 
 import java.sql.*;
 
-public class AddBookSql {
-    public static int addbooksql(BooksData book){
+public class SelectUserSql {
+    public static UsersData selectusersql(String eml){
         Connection conn = null;
         Statement stmt = null;
-        int flag = 0;
+        UsersData rtn = null;
         try{
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
                     "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
-            String dt = "INSERT INTO books(title,author,publisher,publisheryear,cover_url) " +
-                            "VALUES (?,?,?,?,?);";
+            String dt = "SELECT * " +
+                            "FROM users " +
+                            "WHERE mailaddress = ?;";
             PreparedStatement sql = conn.prepareStatement(dt);
-            sql.setString(1, book.title);
-            sql.setString(2, book.author);
-            sql.setString(3, book.publisher);
-            sql.setString(4, book.pyear);
-            sql.setString(5, book.cover_url);
-            int hrs = sql.executeUpdate();
-            if (hrs == 1){ flag = 1; }
+            sql.setString(1,eml);
+            ResultSet hrs = sql.executeQuery();
+            rtn.SetData(hrs.getString("name"),hrs.getString("mailaddress"),hrs.getString("pass"));
         } catch(Exception e){
             e.printStackTrace();
         } finally {
@@ -38,6 +35,6 @@ public class AddBookSql {
                 se.printStackTrace();
             }
         }
-        return flag;
+        return rtn;
     }
 }

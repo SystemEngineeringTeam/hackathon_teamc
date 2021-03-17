@@ -1,24 +1,19 @@
-package usersql;
+package database;
 
 import java.sql.*;
 
-public class AddUser {
-    public static int adduser(String ml,String psswrd,String nm){
+public class testsql {
+    public static void testprint(){
         Connection conn = null;
         Statement stmt = null;
-        int flag = 0;
         try{
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
                     "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
-            String dt = "INSERT INTO users(name,mailaddress,pass) " +
-                            "VALUES (?,?,?);";
+            String dt = "";
             PreparedStatement sql = conn.prepareStatement(dt);
-            sql.setString(1,nm);
-            sql.setString(2,psswrd);
-            sql.setString(3,ml);
-            int hrs = sql.executeUpdate();
-            if (hrs == 1){ flag = 1; }
+            ResultSet hrs = sql.executeQuery();
+
 
         } catch(Exception e){
             e.printStackTrace();
@@ -37,6 +32,5 @@ public class AddUser {
                 se.printStackTrace();
             }
         }
-        return flag;
     }
 }

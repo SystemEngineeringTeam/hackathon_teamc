@@ -1,4 +1,4 @@
-package booksql;
+package database.booksql;
 
 import java.sql.*;
 
