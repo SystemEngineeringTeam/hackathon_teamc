@@ -58,7 +58,7 @@ public class BookHandler implements HttpHandler {
 
             ObjectMapper mapper = new ObjectMapper();
             resBody = mapper.writeValueAsString(Get);
-            resBody = "[{\"id\": 0,\"title\": \"string\",\"author\": \"string\",\"publisher\": \"string\",\"publishYear\": \"string\",\"cover\": \"string\",\"tags\": [\"string\"]}]";
+            //resBody = "[{\"id\": 0,\"title\": \"string\",\"author\": \"string\",\"publisher\": \"string\",\"publishYear\": \"string\",\"cover\": \"string\",\"tags\": [\"string\"]}]";
             System.out.println(resBody);
             break;
 
