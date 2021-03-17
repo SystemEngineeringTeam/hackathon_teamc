@@ -1,11 +1,12 @@
 
 package api;
-import booksql.*;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import database.booksql.BooksData;
+import database.booksql.SelectBookSql;
 //import database.src.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +27,8 @@ public class BookHandler implements HttpHandler {
     // HTTP リクエストを処理する
     public void handle(HttpExchange t) throws IOException {
         String resBody = "";
+        ObjectMapper mapper = new ObjectMapper();
+
         System.out.println("**************************************************");
 
         // 開始行を取得
@@ -58,10 +61,7 @@ public class BookHandler implements HttpHandler {
             case "get":
                 ArrayList<BooksData>  Get = SelectBookSql.selectbooksql();
 
-
-                ObjectMapper mapper = new ObjectMapper();
                 resBody = mapper.writeValueAsString(Get);
-                resBody = "[{\"id\": 0,\"title\": \"string\",\"author\": \"string\",\"publisher\": \"string\",\"publishYear\": \"string\",\"cover\": \"string\",\"tags\": [\"string\"]}]";
                 System.out.println(resBody);
                 break;
 

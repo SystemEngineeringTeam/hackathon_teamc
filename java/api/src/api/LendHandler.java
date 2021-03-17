@@ -5,8 +5,10 @@
 //import com.sun.net.httpserver.Headers;
 //import com.sun.net.httpserver.HttpExchange;
 //import com.sun.net.httpserver.HttpHandler;
-//import lendsql.AddLendSql;
-//import lendsql.UpdateLendSql;
+////import database.booksql.BooksData;
+////import database.booksql.SelectBookSql;
+//import database.lendsql.AddLendSql;
+////import database.lendsql.UpdateLendSql;
 ////import database.src.*;
 //import java.io.IOException;
 //import java.io.InputStream;
@@ -17,7 +19,10 @@
 //import java.time.ZoneOffset;
 //import java.time.ZonedDateTime;
 //import java.time.format.DateTimeFormatter;
+////import java.util.ArrayList;
 //import java.util.Locale;
+////import com.fasterxml.jackson.core.JsonProcessingException;
+//import com.fasterxml.jackson.databind.ObjectMapper;
 //
 //
 ////import java.util.ArrayList;
@@ -27,6 +32,9 @@
 //    // HTTP リクエストを処理する
 //    public void handle(HttpExchange t) throws IOException {
 //        System.out.println("**************************************************");
+//
+//        String resBody = "";
+//        ObjectMapper mapper = new ObjectMapper();
 //
 //        // 開始行を取得
 //        String startLine =
@@ -55,21 +63,24 @@
 //        //  Java 14 でプレビュー機能として使えるヒアドキュメント的な Text Blocks 機能を使ってみる)
 //
 //
-//        if (t.getRequestMethod().toLowerCase(Locale.ROOT).equals("post")) {
-//            int id = 0;
-//            String email ="";
-//            int post = AddLendSql.addlendsql(id,email);
-//
-//
-//
-//        }
-//        else if(t.getRequestMethod().toLowerCase(Locale.ROOT).equals("put")) {
-//            int id = 0;
-//
-//            int put = UpdateLendSql.updatelendsql(id);
+//        switch(t.getRequestMethod().toLowerCase(Locale.ROOT)){
+//            case "post":
+//               int id = 0;
+//               String email = "";
+//               int add = AddLendSql.addlendsql(id, email);
+//                resBody = mapper.writeValueAsString(add);
+//                System.out.println(add);
+//                break;
 //
 //
 //        }
+////        else if(t.getRequestMethod().toLowerCase(Locale.ROOT).equals("put")) {
+////            int id = 0;
+////
+////            int put = UpdateLendSql.updatelendsql(id);
+////
+////
+////        }
 //
 //
 //
