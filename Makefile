@@ -9,8 +9,8 @@ STOP=$(COMPOSE) stop
 RM=$(COMPOSE) rm
 DOWN=$(COMPOSE) down
 # REACT=$(EXEC) react
-JAVA=$(EXEC) app_api
-DB=$(EXEC) app_mariadb
+JAVA=$(EXEC) api
+DB=$(EXEC) mariadb
 
 all: docker/up
 
