@@ -1,4 +1,4 @@
-package lendsql;
+package database.lendsql;
 
 import java.sql.*;
 import java.util.Calendar;
@@ -19,8 +19,11 @@ public class AddLendSql {
             PreparedStatement sql = conn.prepareStatement(dt1);
             sql.setString(1,eml);
             ResultSet hrs = sql.executeQuery();
-            int uid = hrs.getInt("id");
-            String dt2 = "INSERT INTO rental_lists" +
+            int uid = 0;
+            if (hrs.next()) {
+                uid = hrs.getInt("id");
+            }
+            String dt2 = "INSERT INTO rental_lists " +
                             "VALUES(?,?,?,0);";
             java.util.Date today = new Date();
             Calendar clndr = Calendar.getInstance();
@@ -32,6 +35,8 @@ public class AddLendSql {
             sql.setInt(1,bid);
             sql.setInt(2,uid);
             sql.setDate(3,ddln);
+            int ans = sql.executeUpdate();
+            if(ans > 0){ flag = 1; }
 
         } catch(Exception e) {
             e.printStackTrace();

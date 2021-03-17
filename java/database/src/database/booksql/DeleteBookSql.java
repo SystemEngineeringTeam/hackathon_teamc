@@ -1,27 +1,24 @@
-package loginsql;
+package database.booksql;
 
 import java.sql.*;
 
-public class LoginSql {
-    public static int loginsql(String eml,String psswrd){
+public class DeleteBookSql {
+    public static int deletebooksql(int id) {
         Connection conn = null;
         Statement stmt = null;
         int flag = 0;
-        try{
+        try {
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
                     "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
-            String dt = "SELECT COUNT(*) AS judg" +
-                            "FROM users" +
-                            "WHERE mailaddress = ? " +
-                            "AND pass = ?;";
+            String dt = "DElETE FROM books WHERE id = ?;";
             PreparedStatement sql = conn.prepareStatement(dt);
-            sql.setString(1,eml);
-            sql.setString(2,psswrd);
-            ResultSet hrs = sql.executeQuery();
-            flag = hrs.getInt("judg");
-
-        } catch(Exception e){
+            sql.setInt(1, id);
+            int hrs = sql.executeUpdate();
+            if (hrs == 1) {
+                flag = 1;
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
@@ -41,3 +38,4 @@ public class LoginSql {
         return flag;
     }
 }
+

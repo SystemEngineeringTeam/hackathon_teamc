@@ -10,6 +10,8 @@ services:
       MYSQL_DATABASE: app_db
       MYSQL_USER: hoge
       MYSQL_PASSWORD: hogehoge
+    volumes:
+      - ./mariadb/db:/docker-entrypoint-initdb.d
 
   api:
     build: ./java
