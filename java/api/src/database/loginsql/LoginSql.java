@@ -1,26 +1,25 @@
-package database.usersql;
+package database.loginsql;
 
 import java.sql.*;
 
-public class SelectUserSql {
-    public static UsersData selectusersql(String eml){
+public class LoginSql {
+    public static int loginsql(String eml, String psswrd) {
         Connection conn = null;
         Statement stmt = null;
-        UsersData rtn = new UsersData();
-        try{
+        int flag = 0;
+        try {
             Class.forName("org.mariadb.jdbc.Driver");
-            conn = DriverManager.getConnection(
-                    "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
-            String dt = "SELECT * " +
-                            "FROM users " +
-                            "WHERE mailaddress = ?;";
+            conn = DriverManager.getConnection("jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
+            String dt = "SELECT COUNT(*) AS judg " + "FROM users " + "WHERE mailaddress = ? " + "AND pass = ?;";
             PreparedStatement sql = conn.prepareStatement(dt);
-            sql.setString(1,eml);
+            sql.setString(1, eml);
+            sql.setString(2, psswrd);
             ResultSet hrs = sql.executeQuery();
-            if(hrs.next()){
-                rtn.SetData(hrs.getString("name"),hrs.getString("mailaddress"),hrs.getString("pass"));
+            if (hrs.next()) {
+                flag = hrs.getInt("judg");
             }
-        } catch(Exception e){
+
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
@@ -37,6 +36,6 @@ public class SelectUserSql {
                 se.printStackTrace();
             }
         }
-        return rtn;
+        return flag;
     }
 }

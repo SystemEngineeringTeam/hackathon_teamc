@@ -1,21 +1,23 @@
+package database.usersql;
+
 import java.sql.*;
 
-public class CheckTable {
-    public static void checktable(){
+public class SelectUserSql {
+    public static UsersData selectusersql(String eml) {
         Connection conn = null;
         Statement stmt = null;
-        try{
+        UsersData rtn = new UsersData();
+        try {
             Class.forName("org.mariadb.jdbc.Driver");
-            conn = DriverManager.getConnection(
-                    "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
-            String dt = "SHOW TABLES FROM app_db";
+            conn = DriverManager.getConnection("jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
+            String dt = "SELECT * " + "FROM users " + "WHERE mailaddress = ?;";
             PreparedStatement sql = conn.prepareStatement(dt);
+            sql.setString(1, eml);
             ResultSet hrs = sql.executeQuery();
-            if (hrs == null){ System.out.println("Table not found"); }
-            while (hrs.next()){
-                System.out.println(hrs.getString(1));
+            if (hrs.next()) {
+                rtn.SetData(hrs.getString("name"), hrs.getString("mailaddress"), hrs.getString("pass"));
             }
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
@@ -32,5 +34,6 @@ public class CheckTable {
                 se.printStackTrace();
             }
         }
+        return rtn;
     }
 }

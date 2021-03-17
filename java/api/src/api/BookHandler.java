@@ -1,6 +1,7 @@
 
 package api;
-import booksql.*;
+
+import database.booksql.*;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -29,10 +30,7 @@ public class BookHandler implements HttpHandler {
         System.out.println("**************************************************");
 
         // 開始行を取得
-        String startLine =
-                t.getRequestMethod() + " " +
-                        t.getRequestURI().toString() + " " +
-                        t.getProtocol();
+        String startLine = t.getRequestMethod() + " " + t.getRequestURI().toString() + " " + t.getProtocol();
         System.out.println(startLine);
 
         // リクエストヘッダを取得
@@ -52,70 +50,61 @@ public class BookHandler implements HttpHandler {
 
         // レスポンスボディを構築
         // (ここでは Java 14 から正式導入された Switch Expressions と
-        //  Java 14 でプレビュー機能として使えるヒアドキュメント的な Text Blocks 機能を使ってみる)
+        // Java 14 でプレビュー機能として使えるヒアドキュメント的な Text Blocks 機能を使ってみる)
 
-        switch(t.getRequestMethod().toLowerCase(Locale.ROOT)){
-            case "get":
-                ArrayList<BooksData>  Get = SelectBookSql.selectbooksql();
+        switch (t.getRequestMethod().toLowerCase(Locale.ROOT)) {
+        case "get":
+            ArrayList<BooksData> Get = SelectBookSql.selectbooksql();
 
+            ObjectMapper mapper = new ObjectMapper();
+            resBody = mapper.writeValueAsString(Get);
+            resBody = "[{\"id\": 0,\"title\": \"string\",\"author\": \"string\",\"publisher\": \"string\",\"publishYear\": \"string\",\"cover\": \"string\",\"tags\": [\"string\"]}]";
+            System.out.println(resBody);
+            break;
 
-                ObjectMapper mapper = new ObjectMapper();
-                resBody = mapper.writeValueAsString(Get);
-                resBody = "[{\"id\": 0,\"title\": \"string\",\"author\": \"string\",\"publisher\": \"string\",\"publishYear\": \"string\",\"cover\": \"string\",\"tags\": [\"string\"]}]";
-                System.out.println(resBody);
-                break;
+        default:
 
-            default:
-
-//            case "post":
-//              BooksData book =  new BooksData();
-//
-//                int post = AddBookSql.addbooksql(book);
-//                break;
-//
-//
-//
-//            case "delete":
-//                int id = 0;
-//                int delete = DeleteBookSql.deletebooksql(id);
-//            break;
-//
-//            case "put":
-//                String title ="";
-//                String author ="";
-//                String publisher = "";
-//                String publishYear = "";
-//                String cover = "";
-//                int id = 0;
-//                String tags[] = new String[5];
-//                int put = UpdateBookSql.updatebooksql(id,title,author,publisher,publishYear,cover,tags);
-
-        }
-
-            Headers resHeaders = t.getResponseHeaders();
-            resHeaders.set("Content-Type", "application/json");
-            resHeaders.set("Last-Modified",
-                    ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME));
-            resHeaders.set("Server",
-                    "MyServer (" +
-                            System.getProperty("java.vm.name") + " " +
-                            System.getProperty("java.vm.vendor") + " " +
-                            System.getProperty("java.vm.version") + ")");
-
-
-
-            // レスポンスヘッダを送信
-            int statusCode = 200;
-            long contentLength = resBody.getBytes(StandardCharsets.UTF_8).length;
-            t.sendResponseHeaders(statusCode, contentLength);
-
-            // レスポンスボディを送信
-            OutputStream os = t.getResponseBody();
-            os.write(resBody.getBytes());
-            os.close();
+            // case "post":
+            // BooksData book = new BooksData();
+            //
+            // int post = AddBookSql.addbooksql(book);
+            // break;
+            //
+            //
+            //
+            // case "delete":
+            // int id = 0;
+            // int delete = DeleteBookSql.deletebooksql(id);
+            // break;
+            //
+            // case "put":
+            // String title ="";
+            // String author ="";
+            // String publisher = "";
+            // String publishYear = "";
+            // String cover = "";
+            // int id = 0;
+            // String tags[] = new String[5];
+            // int put =
+            // UpdateBookSql.updatebooksql(id,title,author,publisher,publishYear,cover,tags);
 
         }
+
+        Headers resHeaders = t.getResponseHeaders();
+        resHeaders.set("Content-Type", "application/json");
+        resHeaders.set("Last-Modified", ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        resHeaders.set("Server", "MyServer (" + System.getProperty("java.vm.name") + " "
+                + System.getProperty("java.vm.vendor") + " " + System.getProperty("java.vm.version") + ")");
+
+        // レスポンスヘッダを送信
+        int statusCode = 200;
+        long contentLength = resBody.getBytes(StandardCharsets.UTF_8).length;
+        t.sendResponseHeaders(statusCode, contentLength);
+
+        // レスポンスボディを送信
+        OutputStream os = t.getResponseBody();
+        os.write(resBody.getBytes());
+        os.close();
+
     }
-
-
-
+}
