@@ -27,6 +27,7 @@ public class BookHandler implements HttpHandler {
     // HTTP リクエストを処理する
     public void handle(HttpExchange t) throws IOException {
         String resBody = "";
+        ObjectMapper mapper = new ObjectMapper();
         System.out.println("**************************************************");
 
         // 開始行を取得
@@ -52,23 +53,25 @@ public class BookHandler implements HttpHandler {
         // (ここでは Java 14 から正式導入された Switch Expressions と
         // Java 14 でプレビュー機能として使えるヒアドキュメント的な Text Blocks 機能を使ってみる)
 
+
         switch (t.getRequestMethod().toLowerCase(Locale.ROOT)) {
         case "get":
-            ArrayList<BooksData> Get = SelectBookSql.selectbooksql();
 
-            ObjectMapper mapper = new ObjectMapper();
+            ArrayList<BooksData> Get = new ArrayList<BooksData>();
+
             resBody = mapper.writeValueAsString(Get);
             //resBody = "[{\"id\": 0,\"title\": \"string\",\"author\": \"string\",\"publisher\": \"string\",\"publishYear\": \"string\",\"cover\": \"string\",\"tags\": [\"string\"]}]";
             System.out.println(resBody);
             break;
 
-        default:
 
-            // case "post":
-            // BooksData book = new BooksData();
-            //
-            // int post = AddBookSql.addbooksql(book);
-            // break;
+             case "post":
+                BooksData book = new BooksData();
+                book.setBooksData(0,"adf","sdsa","asdfe","1232","csd");
+                int post = AddBookSql.addbooksql(book);
+                resBody = mapper.writeValueAsString(post);
+                System.out.println(resBody);
+             break;
             //
             //
             //
