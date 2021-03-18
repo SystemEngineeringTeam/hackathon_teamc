@@ -9,6 +9,7 @@ public class BooksData {
     public String pyear;
     public String cover_url;
     public String[] tags;
+    public int lend_flag = 0;
 
     public void setBooksData(int id,String title,String author,String publisher,String pyear,String cover_url){
         this.id = id;
@@ -21,4 +22,6 @@ public class BooksData {
     public void settags(String tags){
         this.tags = tags.split(",",0);
     }
+
+    public void setlend(){ lend_flag = 1; }
 }
