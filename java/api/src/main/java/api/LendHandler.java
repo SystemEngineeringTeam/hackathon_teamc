@@ -75,7 +75,7 @@ public class LendHandler implements HttpHandler {
                 default:
                     break;
             }
-        }catch (IOException){
+        }catch (IOException e){
             System.out.println(e);
         }
 
