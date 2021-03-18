@@ -59,41 +59,50 @@ public class BookHandler implements HttpHandler {
         // (ここでは Java 14 から正式導入された Switch Expressions と
         // Java 14 でプレビュー機能として使えるヒアドキュメント的な Text Blocks 機能を使ってみる)
         String reqBody;
-        switch (t.getRequestMethod().toLowerCase(Locale.ROOT)) {
-            case "get":
-                ArrayList<BooksData> getBookData = SelectBookSql.selectbooksql();
-                resBody = mapper.writeValueAsString(getBookData);
-                System.out.println(resBody);
-                break;
+        try {
+            switch (t.getRequestMethod().toLowerCase(Locale.ROOT)) {
+                case "get":
+                    ArrayList<BooksData> getBookData = SelectBookSql.selectbooksql();
+                    resBody = mapper.writeValueAsString(getBookData);
+                    System.out.println(resBody);
+                    break;
 
-            case "post":
-                reqBody = new String(b, StandardCharsets.UTF_8);
-                BooksData book = mapper.readValue(reqBody, BooksData.class);
-                int post = AddBookSql.addbooksql(book);
-                resBody = mapper.writeValueAsString(post);
-                System.out.println(resBody);
-                break;
+                case "post":
+                    reqBody = new String(b, StandardCharsets.UTF_8);
+                    BooksData book = mapper.readValue(reqBody, BooksData.class);
+                    int post = AddBookSql.addbooksql(book);
+                    resBody = mapper.writeValueAsString(post);
+                    System.out.println(resBody);
+                    break;
 
-            case "delete":
-                reqBody = new String(b, StandardCharsets.UTF_8);
-                DeleteBookData bookid = mapper.readValue(reqBody, DeleteBookData.class);
-                int delete = DeleteBookSql.deletebooksql(bookid.bookID);
-                resBody = mapper.writeValueAsString(delete);
-                System.out.println(resBody);
-                break;
+                case "delete":
+                    reqBody = new String(b, StandardCharsets.UTF_8);
+                    DeleteBookData bookid = mapper.readValue(reqBody, DeleteBookData.class);
+                    int delete = DeleteBookSql.deletebooksql(bookid.bookID);
+                    resBody = mapper.writeValueAsString(delete);
+                    System.out.println(resBody);
+                    break;
 
-            // case "put":
-            // String title ="";
-            // String author ="";
-            // String publisher = "";
-            // String publishYear = "";
-            // String cover = "";
-            // int id = 0;
-            // String tags[] = new String[5];
-            // int put =
-            // UpdateBookSql.updatebooksql(id,title,author,publisher,publishYear,cover,tags);
-            default:
-                break;
+                case "put":
+
+                    System.out.println("hoge");
+                    reqBody = new String(b, StandardCharsets.UTF_8);
+                    System.out.println("hello");
+                    BooksData putbook = mapper.readValue(reqBody, BooksData.class);
+                    int put = UpdateBookSql.updatebooksql(putbook);
+                    resBody = mapper.writeValueAsString(put);
+                    System.out.println(resBody);
+                    break;
+                default:
+                    break;
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        if (resBody.equals("1") || resBody.equals("0")) {
+            TFResBody rsbdy = new TFResBody();
+            rsbdy.setAvailable(resBody);
+            resBody = mapper.writeValueAsString(rsbdy);
         }
 
         Headers resHeaders = t.getResponseHeaders();
@@ -118,7 +127,7 @@ public class BookHandler implements HttpHandler {
 
     }
 
-    public class DeleteBookData {
+    public static class DeleteBookData {
         public int bookID;
     }
 }
