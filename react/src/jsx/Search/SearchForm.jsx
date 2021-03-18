@@ -24,11 +24,24 @@ class SearchForm extends React.Component {
 					return (
 						<Book
 							title={e.volumeInfo.title}
+							author={
+								e.volumeInfo.authors && e.volumeInfo.authors.length > 0
+									? e.volumeInfo.authors[0]
+									: "不明"
+							}
+							publisher={
+								e.volumeInfo.publisher ? e.volumeInfo.publisher : "不明"
+							}
+							publishYear={
+								e.volumeInfo.publishedDate
+									? e.volumeInfo.publishedDate.split("-")[0]
+									: ""
+							}
 							key={key++}
 							src={
 								e.volumeInfo.imageLinks && e.volumeInfo.imageLinks.thumbnail
 									? e.volumeInfo.imageLinks.thumbnail
-									: "https://www.shoshinsha-design.com/wp-content/uploads/2020/05/noimage-760x460.png"
+									: "http://via.placeholder.com/350x150"
 							}
 							registered={false}
 						/>
