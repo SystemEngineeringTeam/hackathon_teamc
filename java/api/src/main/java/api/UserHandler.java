@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -68,7 +69,7 @@ public class UserHandler implements HttpHandler {
             case "get":
                 reqBody = new String(b, StandardCharsets.UTF_8);
                 usersData = mapper.readValue(reqBody, UsersData.class);
-                UsersData getUserData = SelectUserSql.selectusersql(usersData.mailaddress);
+                selectdata getUserData = SelectUserSql.selectusersql(usersData.mailaddress);
                 resBody = mapper.writeValueAsString(getUserData);
                 System.out.println(resBody);
                 break;
@@ -126,6 +127,18 @@ public class UserHandler implements HttpHandler {
         os.write(resBody.getBytes());
         os.close();
 
+    }
+
+    public static class selectdata{
+        String email;
+        ArrayList<Integer> list;
+        public void setEmail(String ml){
+            email = ml;
+        }
+
+        public void setList(Integer bid) {
+            list.add(bid);
+        }
     }
 }
 
