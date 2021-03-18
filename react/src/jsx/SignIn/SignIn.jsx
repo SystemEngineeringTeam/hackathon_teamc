@@ -1,9 +1,12 @@
 import React from "react"
 import { Button, Grid, Paper, TextField, Typography } from "@material-ui/core"
 import ReactDOM from "react-dom"
+import Host from "../Host"
+import axios from "axios"
+import { Redirect } from "react-router"
 
 const createHash = require("sha256-uint8array").createHash
-
+const host = new Host()
 class UserForm extends React.Component {
 	constructor(props) {
 		super(props)
@@ -18,24 +21,25 @@ class UserForm extends React.Component {
 		let email = document.querySelector("#email").value
 		let password = document.querySelector("#password").value
 		password = createHash().update(password).digest("hex")
+		let flag = false
+
+		let body = {
+			mailaddress: email,
+			pass: password,
+		}
 
 		// wip post処理かく
-		// await axios.post()
+		await axios.post(host.login, body).then((res) => {
+			console.log(res)
+			flag = res.data.available
+		})
 
-		if (password) {
-			this.setState({
-				html: <Typography color="primary" align="center"></Typography>,
-			})
-
-			// wip ログインできたらcookieに必要な情報を保存
+		if (flag) {
+			alert("ログイン成功")
+			document.cookie = "email=" + email
+			location.href = "/shelf"
 		} else {
-			this.setState({
-				html: (
-					<Typography color="error" align="center">
-						パスワードは8文字以上入力してください
-					</Typography>
-				),
-			})
+			alert("ログイン失敗")
 		}
 	}
 
