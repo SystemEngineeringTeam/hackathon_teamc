@@ -6,9 +6,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import database.usersql.AddUser;
-import database.usersql.SelectUserSql;
-import database.usersql.UpdateUser;
-import database.usersql.UsersData;
+import database.usersql.*;
 //import database.src.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -60,12 +58,13 @@ public class UserHandler implements HttpHandler {
         // (ここでは Java 14 から正式導入された Switch Expressions と
         //  Java 14 でプレビュー機能として使えるヒアドキュメント的な Text Blocks 機能を使ってみる)
 
-
+        String reqBody;
+        UsersData usersData = new UsersData();
         switch (t.getRequestMethod().toLowerCase(Locale.ROOT)) {
 
             case "get":
-                String reqBody = new String(b, StandardCharsets.UTF_8);
-                UsersData usersData = mapper.readValue(reqBody, UsersData.class);
+                reqBody = new String(b, StandardCharsets.UTF_8);
+                usersData = mapper.readValue(reqBody, UsersData.class);
                 UsersData getUserData = SelectUserSql.selectusersql(usersData.mailaddress);
                 resBody = mapper.writeValueAsString(getUserData);
                 System.out.println(resBody);
@@ -84,17 +83,19 @@ public class UserHandler implements HttpHandler {
                 System.out.println(post);
 
                 break;
-//
-//
-//
-//
-//            case "put":
-////            String email = "";
-////            String password = "";
-////            String name = "";
-////            int put = UpdateUser.updateuser(email,password,name);
-//            break;
-//
+
+            case "put":
+                reqBody = new String(b. StandardCharsets.UTF_8);
+                usersData = mapper.readValue(reqBody, UsersData.class);
+                int put = UpdateUser.updateuser(usersData.name,usersData.mailaddress,usersData.pass);
+                resBody = mapper.writeValueAsString(put);
+                break;
+
+        }
+
+        if (resBody.equals("1") || resBody.equals("0")){
+            TFResBody rsbdy = new TFResBody();
+            resBody = mapper.writeValueAsString(rsbdy.setAvailable(resBody));
         }
 
 
