@@ -9,7 +9,7 @@ public class LoginSql {
         int flag = 0;
         try {
             Class.forName("org.mariadb.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
+            conn = DriverManager.getConnection("jdbc:mariadb://app_mariadb/app_db", "hoge", "hogehoge");
             String dt = "SELECT COUNT(*) AS judg " + "FROM users " + "WHERE mailaddress = ? " + "AND pass = ?;";
             PreparedStatement sql = conn.prepareStatement(dt);
             sql.setString(1, eml);

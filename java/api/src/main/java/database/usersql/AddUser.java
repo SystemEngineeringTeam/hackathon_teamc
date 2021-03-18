@@ -9,7 +9,7 @@ public class AddUser {
         int flag = 0;
         try {
             Class.forName("org.mariadb.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
+            conn = DriverManager.getConnection("jdbc:mariadb://app_mariadb/app_db", "hoge", "hogehoge");
             String dt = "INSERT INTO users(name,mailaddress,pass) " + "VALUES (?,?,?);";
             PreparedStatement sql = conn.prepareStatement(dt);
             sql.setString(1, nm);

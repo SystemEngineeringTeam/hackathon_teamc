@@ -9,7 +9,7 @@ public class UpdateLendSql {
         int flag = 0;
         try {
             Class.forName("org.mariadb.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
+            conn = DriverManager.getConnection("jdbc:mariadb://app_mariadb/app_db", "hoge", "hogehoge");
             String dt = "UPDATE rental_lists " + "SET lend_flag = 0 " + "WHERE book_id = ? " + "AND lend_flag = 1;";
             PreparedStatement sql = conn.prepareStatement(dt);
             sql.setInt(1, bid);

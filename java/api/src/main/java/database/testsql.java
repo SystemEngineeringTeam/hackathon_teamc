@@ -9,7 +9,7 @@ public class testsql {
         try{
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
-                    "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
+                    "jdbc:mariadb://app_mariadb/app_db", "hoge", "hogehoge");
             String dt = "";
             PreparedStatement sql = conn.prepareStatement(dt);
             ResultSet hrs = sql.executeQuery();
