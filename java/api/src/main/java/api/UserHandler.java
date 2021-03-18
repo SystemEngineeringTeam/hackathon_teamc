@@ -36,27 +36,25 @@ public class UserHandler implements HttpHandler {
                 t.getRequestMethod() + " " +
                         t.getRequestURI().toString() + " " +
                         t.getProtocol();
-        System.out.println(startLine);
+//        System.out.println(startLine);
 
         // リクエストヘッダを取得
         Headers reqHeaders = t.getRequestHeaders();
-        for (String name : reqHeaders.keySet()) {
-            System.out.println(name + ": " + reqHeaders.getFirst(name));
-        }
+//        for (String name : reqHeaders.keySet()) {
+//            System.out.println(name + ": " + reqHeaders.getFirst(name));
+//        }
 
         // リクエストボディを取得
         InputStream is = t.getRequestBody();
         byte[] b = is.readAllBytes();
-        if (b.length != 0) {
-            System.out.println(); // 空行
-            System.out.println(new String(b, StandardCharsets.UTF_8));
+//        if (b.length != 0) {
 
-            InputStreamReader inputStreamReader = new InputStreamReader(is);
-            Stream<String> streamOfString = new BufferedReader(inputStreamReader).lines();
-            String streamToString = streamOfString.collect(Collectors.joining());
+//            InputStreamReader inputStreamReader = new InputStreamReader(is);
+//            Stream<String> streamOfString = new BufferedReader(inputStreamReader).lines();
+//            String streamToString = streamOfString.collect(Collectors.joining());
 
-            System.out.println(streamToString);
-        }
+//            System.out.println(b);
+//        }
         is.close();
 
         // レスポンスボディを構築
@@ -69,20 +67,21 @@ public class UserHandler implements HttpHandler {
             case "get":
                 String email ="hoge@hoge.com";
                 UsersData getUserData = SelectUserSql.selectusersql(email);
-                System.out.println(getUserData.name);
-                System.out.println(getUserData.mailaddress);
-                System.out.println(getUserData.pass);
                 break;
 
 
             case "post":
-                String posEmail = "";
-                String posPassword = "";
-                String posName = "";
-                int post = AddUser.adduser(posEmail, posPassword, posName);
-                resBody = mapper.writeValueAsString(post);
+                String reqBody = new String(b, StandardCharsets.UTF_8);
+                UsersData usersData = mapper.readValue(reqBody, UsersData.class);
+                System.out.println(usersData.name);
+                System.out.println(usersData.mailaddress);
+                System.out.println(usersData.pass);
 
+                int post = AddUser.adduser(usersData);
+                resBody = mapper.writeValueAsString(post);
                 System.out.println(post);
+
+
                 break;
 //
 //
