@@ -5,7 +5,7 @@ create table books(
     title varchar(128) not null,
     author varchar(16),
     publisher varchar(16),
-    publishyear int,
+    publishyear varchar(4),
     cover_url varchar(256)
 );
 
