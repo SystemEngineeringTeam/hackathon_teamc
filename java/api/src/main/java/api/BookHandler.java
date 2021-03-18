@@ -27,9 +27,7 @@ public class BookHandler implements HttpHandler {
 
     // HTTP リクエストを処理する
     public void handle(HttpExchange t) throws IOException {
-        t.getRequestHeaders().add("Access-Control-Allow-Headers","x-prototype-version,x-requested-with");
-        t.getRequestHeaders().add("Access-Control-Allow-Methods","*");
-        t.getRequestHeaders().add("Access-Control-Allow-Origin","*");
+
         String resBody = "";
         System.out.println("**************************************************");
         ObjectMapper mapper = new ObjectMapper();
@@ -104,6 +102,10 @@ public class BookHandler implements HttpHandler {
         resHeaders.set("Server", "MyServer (" + System.getProperty("java.vm.name") + " "
                 + System.getProperty("java.vm.vendor") + " " + System.getProperty("java.vm.version") + ")");
 
+        t.getResponseHeaders().add("Access-Control-Allow-Headers", "*");
+        t.getResponseHeaders().add("Access-Control-Allow-Methods", "*");
+        t.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+
         // レスポンスヘッダを送信
         int statusCode = 200;
         long contentLength = resBody.getBytes(StandardCharsets.UTF_8).length;
@@ -116,7 +118,7 @@ public class BookHandler implements HttpHandler {
 
     }
 
-    public class DeleteBookData{
+    public class DeleteBookData {
         public int bookID;
     }
 }
