@@ -27,7 +27,7 @@ docker/prod/down: ## docker prod down
 	$(PRODDOWN) -f docker-compose.prod.yml
 
 docker/up: ## docker up
-	$(UP)
+	$(UP) --build
 
 docker/logs: ## docker logs
 	$(LOGS)
@@ -59,8 +59,8 @@ api/down:
 db/bash: ## db(MySQL) container bash
 	$(DB) bash
 
-mysql: ## db(MySQL) container's MySQL access
-	$(DB) mysql --defaults-extra-file=/app/access.cnf winter
+db: ## db(MySQL) container's MySQL access
+	$(DB) mysql --defaults-extra-file=/home/access.cnf app_db
 
 help: ## Display this help screen
 	@grep -E '^[a-zA-Z/_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
