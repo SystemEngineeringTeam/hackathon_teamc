@@ -1,6 +1,7 @@
 
 package api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
@@ -53,20 +54,23 @@ public class LoginHandler implements HttpHandler {
         // (ここでは Java 14 から正式導入された Switch Expressions と
         //  Java 14 でプレビュー機能として使えるヒアドキュメント的な Text Blocks 機能を使ってみる)
 
-
-        if (t.getRequestMethod().toLowerCase(Locale.ROOT).equals("post")) {
-            reqBody = new String(b, StandardCharsets.UTF_8);
-            UsersData usersData = mapper.readValue(reqBody, UsersData.class);
-            int put = LoginSql.loginsql(usersData.mailaddress, usersData.pass);
-            resBody = mapper.writeValueAsString(put);
-
-            if (resBody.equals("1") || resBody.equals("0")) {
-                TFResBody rsbdy = new TFResBody();
-                rsbdy.setAvailable(resBody);
-                resBody = mapper.writeValueAsString(rsbdy);
+        try {
+            if (t.getRequestMethod().toLowerCase(Locale.ROOT).equals("post")) {
+                reqBody = new String(b, StandardCharsets.UTF_8);
+                UsersData usersData = mapper.readValue(reqBody, UsersData.class);
+                int put = LoginSql.loginsql(usersData.mailaddress, usersData.pass);
+                resBody = mapper.writeValueAsString(put);
             }
-
+        } catch (JsonProcessingException e) {
+            System.out.println(e);
         }
+
+        if (resBody.equals("1") || resBody.equals("0")) {
+            TFResBody rsbdy = new TFResBody();
+            rsbdy.setAvailable(resBody);
+            resBody = mapper.writeValueAsString(rsbdy);
+        }
+
 
         Headers resHeaders = t.getResponseHeaders();
         resHeaders.set("Content-Type", "application/json");
