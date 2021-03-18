@@ -29,7 +29,7 @@ class Book extends React.Component {
 		// await axios.post(host.book, {
 
 		// })
-		console.log(this.props)
+
 		let body = {
 			title: this.props.title,
 			author: this.props.author,
@@ -37,11 +37,13 @@ class Book extends React.Component {
 			pyear: this.props.publishYear,
 			cover_url: this.props.src,
 		}
-		console.log(body)
 
 		await axios.post(host.book, body).then((res) => {
 			// wip resのbodyに応じてalertする(登録できたよ)
 			console.log(res)
+			if (res.data.available) {
+				alert("登録完了")
+			}
 		})
 	}
 
