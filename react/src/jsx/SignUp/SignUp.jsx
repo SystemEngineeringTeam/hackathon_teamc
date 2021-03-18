@@ -1,8 +1,11 @@
 import React from "react"
 import { Button, Grid, Paper, TextField, Typography } from "@material-ui/core"
 import ReactDOM from "react-dom"
+import axios from "axios"
+import Host from "../Host"
 
 const createHash = require("sha256-uint8array").createHash
+const host = new Host()
 
 class UserForm extends React.Component {
 	constructor(props) {
@@ -13,13 +16,16 @@ class UserForm extends React.Component {
 		this.doSubmit = this.doSubmit.bind(this)
 	}
 
-	doSubmit(e) {
+	async doSubmit(e) {
 		e.preventDefault()
+		let name = document.querySelector("#name").value
 		let email = document.querySelector("#email").value
 		let password = document.querySelector("#password").value
 		let passwordChecker = document.querySelector("#password-check").value
 
 		let re = new RegExp("^[a-zA-Z0-9.?/-]{8,24}$")
+
+		let flag = true
 		if (re.test(password)) {
 			this.setState({
 				html: (
@@ -31,6 +37,7 @@ class UserForm extends React.Component {
 			})
 
 			if (password != passwordChecker) {
+				flag = false
 				this.setState({
 					html: (
 						<Typography color="error" align="center">
@@ -40,6 +47,7 @@ class UserForm extends React.Component {
 				})
 			}
 		} else {
+			flag = false
 			this.setState({
 				html: (
 					<Typography color="error" align="center">
@@ -50,6 +58,20 @@ class UserForm extends React.Component {
 		}
 
 		password = createHash().update(password).digest("hex")
+		let body = {
+			name: name,
+			mailaddress: email,
+			pass: password,
+		}
+
+		if (flag) {
+			await axios.post(host.user, body).then((res) => {
+				// console.log(res)
+				if (res.data.available) {
+					alert("登録完了")
+				}
+			})
+		}
 	}
 
 	render() {
@@ -67,6 +89,21 @@ class UserForm extends React.Component {
 						<Paper variant="outlined" elevation={3}>
 							<Grid item xs={12}>
 								<form onSubmit={this.doSubmit}>
+									<Grid
+										container
+										item
+										xs={12}
+										alignContent="center"
+										justify="center"
+									>
+										<TextField
+											type="text"
+											placeholder="名前"
+											variant="outlined"
+											id="name"
+											required
+										></TextField>
+									</Grid>
 									<Grid
 										container
 										item
