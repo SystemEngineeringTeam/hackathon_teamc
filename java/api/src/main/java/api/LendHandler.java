@@ -14,6 +14,9 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import database.lendsql.*;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.core.JsonParseException;
+
 
 
 //import java.util.ArrayList;
@@ -52,23 +55,32 @@ public class LendHandler implements HttpHandler {
         // (ここでは Java 14 から正式導入された Switch Expressions と
         //  Java 14 でプレビュー機能として使えるヒアドキュメント的な Text Blocks 機能を使ってみる)
 
-        switch (t.getRequestMethod().toLowerCase(Locale.ROOT)){
-            case "post":
-                lendpostdata data = mapper.readValue(reqBody, lendpostdata.class);
-                int post = AddLendSql.addlendsql(data.bookID,data.email);
-                resBody = mapper.writeValueAsString(post);
-                System.out.println(resBody);
-                break;
+            lendpostdata data;
+            switch (t.getRequestMethod().toLowerCase(Locale.ROOT)) {
+                case "post":
+                    data = mapper.readValue(reqBody, lendpostdata.class);
+                    int post = AddLendSql.addlendsql(data.bookID, data.email);
+                    System.out.println(post);
+                    resBody = mapper.writeValueAsString(post);
+                    System.out.println(resBody);
+                    break;
 
-            case "put":
-                lendpostdata data1 = mapper.readValue(reqBody, lendpostdata.class);
-                int put = UpdateLendSql.updatelendsql(data1.bookID);
-                resBody = mapper.writeValueAsString(put);
-                System.out.println(resBody);
-                break;
+                case "put":
+                    data = mapper.readValue(reqBody, lendpostdata.class);
+                    int put = UpdateLendSql.updatelendsql(data.bookID);
+                    resBody = mapper.writeValueAsString(put);
+                    System.out.println(resBody);
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
+            }
+
+
+        if (resBody.equals("1") || resBody.equals("0")) {
+            TFResBody rsbdy = new TFResBody();
+            rsbdy.setAvailable(resBody);
+            resBody = mapper.writeValueAsString(rsbdy);
         }
 
 
@@ -104,6 +116,7 @@ public class LendHandler implements HttpHandler {
     public class lendpostdata{
         int bookID;
         String email;
+        public lendpostdata(){ }
     }
 }
 
