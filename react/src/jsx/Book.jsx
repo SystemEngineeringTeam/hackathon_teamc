@@ -19,6 +19,8 @@ class Book extends React.Component {
 
 		this.doAdd = this.doAdd.bind(this)
 		this.doBorrow = this.doBorrow.bind(this)
+		this.doDelete = this.doDelete.bind(this)
+
 		this.isLend = this.props.lend_flag
 	}
 
@@ -44,6 +46,16 @@ class Book extends React.Component {
 			if (res.data.available) {
 				alert("登録完了")
 			}
+		})
+	}
+
+	async doDelete() {
+		let body = {
+			bookID: this.props.bookID,
+		}
+		console.log(body)
+		await axios.delete(host.book, { data: body }).then((res) => {
+			console.log(res)
 		})
 	}
 
@@ -109,7 +121,12 @@ class Book extends React.Component {
 
 							{this.props.registered ? (
 								<Grid xs={3} item>
-									<Button color="secondary" variant="contained" height="20px">
+									<Button
+										color="secondary"
+										variant="contained"
+										height="20px"
+										onClick={this.doDelete}
+									>
 										削除
 									</Button>
 								</Grid>
