@@ -117,9 +117,11 @@ public class LendHandler implements HttpHandler {
 
     }
 
-    public class lendpostdata{
-        int bookID;
-        String email;
+
+    public static class lendpostdata{
+        public int bookID;
+        public String email;
+
         public lendpostdata(){ }
     }
 }
