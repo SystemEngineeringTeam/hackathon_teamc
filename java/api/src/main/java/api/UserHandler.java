@@ -60,16 +60,19 @@ public class UserHandler implements HttpHandler {
         // レスポンスボディを構築
         // (ここでは Java 14 から正式導入された Switch Expressions と
         //  Java 14 でプレビュー機能として使えるヒアドキュメント的な Text Blocks 機能を使ってみる)
-
         String reqBody;
         UsersData usersData = new UsersData();
+        try {
         switch (t.getRequestMethod().toLowerCase(Locale.ROOT)) {
 
             case "get":
                 reqBody = new String(b, StandardCharsets.UTF_8);
-                usersData = mapper.readValue(reqBody, UsersData.class);
-                UsersData getUserData = SelectUserSql.selectusersql(usersData.mailaddress);
-                resBody = mapper.writeValueAsString(getUserData);
+
+                    usersData = mapper.readValue(reqBody, UsersData.class);
+
+
+               usersData = SelectUserSql.selectusersql(usersData.mailaddress);
+                resBody = mapper.writeValueAsString(usersData);
                 System.out.println(resBody);
                 break;
 
@@ -92,6 +95,9 @@ public class UserHandler implements HttpHandler {
             default:
                 break;
 
+        }
+        }catch (JsonProcessingException e) {
+            System.out.println(e);
         }
 
         if (resBody.equals("1") || resBody.equals("0")) {
