@@ -48,11 +48,10 @@ public class UserHandler implements HttpHandler {
         InputStream is = t.getRequestBody();
         byte[] b = is.readAllBytes();
 //        if (b.length != 0) {
-
 //            InputStreamReader inputStreamReader = new InputStreamReader(is);
 //            Stream<String> streamOfString = new BufferedReader(inputStreamReader).lines();
 //            String streamToString = streamOfString.collect(Collectors.joining());
-
+//
 //            System.out.println(b);
 //        }
         is.close();
@@ -65,14 +64,17 @@ public class UserHandler implements HttpHandler {
         switch (t.getRequestMethod().toLowerCase(Locale.ROOT)) {
 
             case "get":
-                String email ="hoge@hoge.com";
-                UsersData getUserData = SelectUserSql.selectusersql(email);
+                String reqBody = new String(b,StandardCharsets.UTF_8);
+                UsersData usersData = mapper.readValue(reqBody,UsersData.class);
+                UsersData getUserData = SelectUserSql.selectusersql(usersData.mailaddress);
+                resBody = mapper.writeValueAsString(getUserData);
+                System.out.println(resBody);
                 break;
 
 
             case "post":
-                String reqBody = new String(b, StandardCharsets.UTF_8);
-                UsersData usersData = mapper.readValue(reqBody, UsersData.class);
+                 reqBody = new String(b, StandardCharsets.UTF_8);
+                 usersData = mapper.readValue(reqBody, UsersData.class);
                 System.out.println(usersData.name);
                 System.out.println(usersData.mailaddress);
                 System.out.println(usersData.pass);
@@ -81,17 +83,16 @@ public class UserHandler implements HttpHandler {
                 resBody = mapper.writeValueAsString(post);
                 System.out.println(post);
 
-
                 break;
 //
 //
 //
 //
 //            case "put":
-//            String email = "";
-//            String password = "";
-//            String name = "";
-//            int put = UpdateUser.updateuser(email,password,name);
+////            String email = "";
+////            String password = "";
+////            String name = "";
+////            int put = UpdateUser.updateuser(email,password,name);
 //            break;
 //
         }
