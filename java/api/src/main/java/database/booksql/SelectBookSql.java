@@ -39,14 +39,14 @@ public class SelectBookSql {
                     st.append(","+tmp.getString("tags_detail"));
                 }
                 ind.settags(new String(st));
-                String checklend = "SELECT COUNT(*) AS check " +
+                String checklend = "SELECT COUNT(*) AS flg " +
                                         "FROM rental_lists " +
                                         "WHERE book_id = ? " +
                                         "AND lend_flag = 1;";
                 sql = conn.prepareStatement(checklend);
                 sql.setInt(1,ind.id);
                 tmp = sql.executeQuery();
-                if (tmp.next() && tmp.getInt("check") > 0){
+                if (tmp.next() && tmp.getInt("flg") > 0){
                     ind.setlend();
                 }
                 rtn.add(ind);
