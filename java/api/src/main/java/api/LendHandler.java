@@ -5,8 +5,6 @@ package api;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import lendsql.AddLendSql;
-import lendsql.UpdateLendSql;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -56,8 +54,8 @@ public class LendHandler implements HttpHandler {
 
         switch (t.getRequestMethod().toLowerCase(Locale.ROOT)){
             case "post":
-                Model model = mapper.readValue(reqBody, Model.class);
-                int post = AddLendSql.addlendsql(model.bookID,model.email);
+                lendpostdata data = mapper.readValue(reqBody, lendpostdata.class);
+                int post = AddLendSql.addlendsql(data.bookID,data.email);
                 resBody = mapper.writeValueAsString(post);
                 System.out.println(resBody);
                 break;
@@ -97,6 +95,11 @@ public class LendHandler implements HttpHandler {
         os.write(resBody.getBytes());
         os.close();
 
+    }
+
+    public class lendpostdata{
+        int bookID;
+        String email;
     }
 }
 
