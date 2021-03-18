@@ -27,6 +27,9 @@ public class BookHandler implements HttpHandler {
 
     // HTTP リクエストを処理する
     public void handle(HttpExchange t) throws IOException {
+        t.getRequestHeaders().add("Access-Control-Allow-Headers","x-prototype-version,x-requested-with");
+        t.getRequestHeaders().add("Access-Control-Allow-Methods","*");
+        t.getRequestHeaders().add("Access-Control-Allow-Origin","*");
         String resBody = "";
         System.out.println("**************************************************");
         ObjectMapper mapper = new ObjectMapper();
@@ -57,7 +60,7 @@ public class BookHandler implements HttpHandler {
         // レスポンスボディを構築
         // (ここでは Java 14 から正式導入された Switch Expressions と
         // Java 14 でプレビュー機能として使えるヒアドキュメント的な Text Blocks 機能を使ってみる)
-
+        String reqBody;
         switch (t.getRequestMethod().toLowerCase(Locale.ROOT)) {
             case "get":
                 ArrayList<BooksData> getBookData = SelectBookSql.selectbooksql();
@@ -65,23 +68,22 @@ public class BookHandler implements HttpHandler {
                 System.out.println(resBody);
                 break;
 
-
             case "post":
-                String reqBody = new String(b, StandardCharsets.UTF_8);
+                reqBody = new String(b, StandardCharsets.UTF_8);
                 BooksData book = mapper.readValue(reqBody, BooksData.class);
                 int post = AddBookSql.addbooksql(book);
                 resBody = mapper.writeValueAsString(post);
                 System.out.println(resBody);
                 break;
 
-            //
-            //
-            //
-            // case "delete":
-            // int id = 0;
-            // int delete = DeleteBookSql.deletebooksql(id);
-            // break;
-            //
+            case "delete":
+                reqBody = new String(b, StandardCharsets.UTF_8);
+                DeleteBookData bookid = mapper.readValue(reqBody, DeleteBookData.class);
+                int delete = DeleteBookSql.deletebooksql(bookid.bookID);
+                resBody = mapper.writeValueAsString(delete);
+                System.out.println(resBody);
+                break;
+
             // case "put":
             // String title ="";
             // String author ="";
@@ -93,6 +95,7 @@ public class BookHandler implements HttpHandler {
             // int put =
             // UpdateBookSql.updatebooksql(id,title,author,publisher,publishYear,cover,tags);
             default:
+                break;
         }
 
         Headers resHeaders = t.getResponseHeaders();
@@ -104,9 +107,6 @@ public class BookHandler implements HttpHandler {
         // レスポンスヘッダを送信
         int statusCode = 200;
         long contentLength = resBody.getBytes(StandardCharsets.UTF_8).length;
-        t.getResponseHeaders().add("Access-Control-Allow-Headers","x-prototype-version,x-requested-with");
-        t.getResponseHeaders().add("Access-Control-Allow-Methods","*");
-        t.getResponseHeaders().add("Access-Control-Allow-Origin","*");
         t.sendResponseHeaders(statusCode, contentLength);
 
         // レスポンスボディを送信
@@ -114,5 +114,9 @@ public class BookHandler implements HttpHandler {
         os.write(resBody.getBytes());
         os.close();
 
+    }
+
+    public class DeleteBookData{
+        public int bookID;
     }
 }
