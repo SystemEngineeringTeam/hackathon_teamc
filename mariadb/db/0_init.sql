@@ -13,7 +13,7 @@ create table users(
     id int not null auto_increment primary key,
     name varchar(16) not null,
     mailaddress varchar(64) not null,
-    pass varchar(16) not null
+    pass varchar(256) not null
 );
 
 create table tags(
