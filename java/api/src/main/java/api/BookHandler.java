@@ -6,6 +6,8 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import database.usersql.SelectUserSql;
+import database.usersql.UsersData;
 //import database.src.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,6 +29,8 @@ public class BookHandler implements HttpHandler {
     public void handle(HttpExchange t) throws IOException {
         String resBody = "";
         System.out.println("**************************************************");
+        ObjectMapper mapper = new ObjectMapper();
+
 
         // 開始行を取得
         String startLine = t.getRequestMethod() + " " + t.getRequestURI().toString() + " " + t.getProtocol();
@@ -41,35 +45,35 @@ public class BookHandler implements HttpHandler {
         // リクエストボディを取得
         InputStream is = t.getRequestBody();
         byte[] b = is.readAllBytes();
+//        if (b.length != 0) {
+//            InputStreamReader inputStreamReader = new InputStreamReader(is);
+//            Stream<String> streamOfString = new BufferedReader(inputStreamReader).lines();
+//            String streamToString = streamOfString.collect(Collectors.joining());
+//
+//            System.out.println(b);
+//        }
         is.close();
-        if (b.length != 0) {
-            System.out.println(); // 空行
-            System.out.println(new String(b, StandardCharsets.UTF_8));
-        }
 
         // レスポンスボディを構築
         // (ここでは Java 14 から正式導入された Switch Expressions と
         // Java 14 でプレビュー機能として使えるヒアドキュメント的な Text Blocks 機能を使ってみる)
 
         switch (t.getRequestMethod().toLowerCase(Locale.ROOT)) {
-        case "get":
-            ArrayList<BooksData> Get = SelectBookSql.selectbooksql();
+            case "get":
+                ArrayList<BooksData> getBookData = SelectBookSql.selectbooksql();
+                resBody = mapper.writeValueAsString(getBookData);
+                System.out.println(resBody);
+                break;
 
-            ObjectMapper mapper = new ObjectMapper();
-            resBody = mapper.writeValueAsString(Get);
-            // resBody = "[{\"id\": 0,\"title\": \"string\",\"author\":
-            // \"string\",\"publisher\": \"string\",\"publishYear\": \"string\",\"cover\":
-            // \"string\",\"tags\": [\"string\"]}]";
-            System.out.println(resBody);
-            break;
 
-        default:
+            case "post":
+                String reqBody = new String(b, StandardCharsets.UTF_8);
+                BooksData book = mapper.readValue(reqBody, BooksData.class);
+                int post = AddBookSql.addbooksql(book);
+                resBody = mapper.writeValueAsString(post);
+                System.out.println(resBody);
+                break;
 
-            // case "post":
-            // BooksData book = new BooksData();
-            //
-            // int post = AddBookSql.addbooksql(book);
-            // break;
             //
             //
             //
@@ -88,7 +92,7 @@ public class BookHandler implements HttpHandler {
             // String tags[] = new String[5];
             // int put =
             // UpdateBookSql.updatebooksql(id,title,author,publisher,publishYear,cover,tags);
-
+            default:
         }
 
         Headers resHeaders = t.getResponseHeaders();
@@ -100,6 +104,9 @@ public class BookHandler implements HttpHandler {
         // レスポンスヘッダを送信
         int statusCode = 200;
         long contentLength = resBody.getBytes(StandardCharsets.UTF_8).length;
+        t.getResponseHeaders().add("Access-Control-Allow-Headers","x-prototype-version,x-requested-with");
+        t.getResponseHeaders().add("Access-Control-Allow-Methods","*");
+        t.getResponseHeaders().add("Access-Control-Allow-Origin","*");
         t.sendResponseHeaders(statusCode, contentLength);
 
         // レスポンスボディを送信

@@ -68,6 +68,9 @@
 //        // レスポンスヘッダを送信
 //        int statusCode = 200;
 //        long contentLength = resBody.getBytes(StandardCharsets.UTF_8).length;
+//        t.getResponseHeaders().add("Access-Control-Allow-Headers","x-prototype-version,x-requested-with");
+//        t.getResponseHeaders().add("Access-Control-Allow-Methods","*");
+//        t.getResponseHeaders().add("Access-Control-Allow-Origin","*");
 //        t.sendResponseHeaders(statusCode, contentLength);
 //
 //        // レスポンスボディを送信
