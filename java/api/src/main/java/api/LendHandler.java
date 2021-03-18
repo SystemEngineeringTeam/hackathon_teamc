@@ -60,16 +60,16 @@ public class LendHandler implements HttpHandler {
                 System.out.println(resBody);
                 break;
 
+            case "put":
+                lendpostdata data1 = mapper.readValue(reqBody, lendpostdata.class);
+                int put = UpdateLendSql.updatelendsql(data1.bookID);
+                resBody = mapper.writeValueAsString(put);
+                System.out.println(resBody);
+                break;
+
             default:
                 break;
         }
-//        if(t.getRequestMethod().toLowerCase(Locale.ROOT).equals("put")) {
-//            int id = 0;
-//
-//            int put = UpdateLendSql.updatelendsql(id);
-//
-//
-//        }
 
 
 
@@ -88,6 +88,11 @@ public class LendHandler implements HttpHandler {
         // レスポンスヘッダを送信
         int statusCode = 200;
         long contentLength = resBody.getBytes(StandardCharsets.UTF_8).length;
+
+        t.getRequestHeaders().add("Access-Control-Allow-Headers","*");
+        t.getRequestHeaders().add("Access-Control-Allow-Methods","*");
+        t.getRequestHeaders().add("Access-Control-Allow-Origin","*");
+
         t.sendResponseHeaders(statusCode, contentLength);
 
         // レスポンスボディを送信
