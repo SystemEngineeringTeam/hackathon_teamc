@@ -14,7 +14,7 @@ public class UpdateLendSql {
             PreparedStatement sql = conn.prepareStatement(dt);
             sql.setInt(1, bid);
             int hrs = sql.executeUpdate();
-            if (hrs > 1) {
+            if (hrs > 0) {
                 flag = 1;
             }
 
