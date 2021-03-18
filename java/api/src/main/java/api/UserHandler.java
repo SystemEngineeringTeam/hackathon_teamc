@@ -26,6 +26,11 @@ public class UserHandler implements HttpHandler {
     // HTTP リクエストを処理する
     public void handle(HttpExchange t) throws IOException {
         System.out.println("**************************************************");
+
+        t.getResponseHeaders().add("Access-Control-Allow-Headers","x-prototype-version,x-requested-with");
+        t.getResponseHeaders().add("Access-Control-Allow-Methods","*");
+        t.getResponseHeaders().add("Access-Control-Allow-Origin","*");
+
         String resBody = "";
         ObjectMapper mapper = new ObjectMapper();
 
@@ -81,21 +86,24 @@ public class UserHandler implements HttpHandler {
                 int post = AddUser.adduser(usersData);
                 resBody = mapper.writeValueAsString(post);
                 System.out.println(post);
-
                 break;
 
             case "put":
-                reqBody = new String(b. StandardCharsets.UTF_8);
+                reqBody = new String(b, StandardCharsets.UTF_8);
                 usersData = mapper.readValue(reqBody, UsersData.class);
                 int put = UpdateUser.updateuser(usersData.name,usersData.mailaddress,usersData.pass);
                 resBody = mapper.writeValueAsString(put);
+                break;
+
+            default:
                 break;
 
         }
 
         if (resBody.equals("1") || resBody.equals("0")){
             TFResBody rsbdy = new TFResBody();
-            resBody = mapper.writeValueAsString(rsbdy.setAvailable(resBody));
+            rsbdy.setAvailable(resBody);
+            resBody = mapper.writeValueAsString(rsbdy);
         }
 
 
@@ -114,9 +122,7 @@ public class UserHandler implements HttpHandler {
         int statusCode = 200;
         long contentLength = resBody.getBytes(StandardCharsets.UTF_8).length;
         t.sendResponseHeaders(statusCode, contentLength);
-        t.getResponseHeaders().add("Access-Control-Allow-Headers", "x-prototype-version,x-requested-with");
-        t.getResponseHeaders().add("Access-Control-Allow-Methods", "*");
-        t.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+
 
         // レスポンスボディを送信
         OutputStream os = t.getResponseBody();
