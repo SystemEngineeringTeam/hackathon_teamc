@@ -3,8 +3,8 @@ use app_db;
 create table books(
     id int not null auto_increment primary key,
     title varchar(128) not null,
-    author varchar(16),
-    publisher varchar(16),
+    author varchar(64),
+    publisher varchar(64),
     publishyear varchar(4),
     cover_url varchar(256)
 );
@@ -13,7 +13,7 @@ create table users(
     id int not null auto_increment primary key,
     name varchar(16) not null,
     mailaddress varchar(64) not null,
-    pass varchar(16) not null
+    pass varchar(256) not null
 );
 
 create table tags(
