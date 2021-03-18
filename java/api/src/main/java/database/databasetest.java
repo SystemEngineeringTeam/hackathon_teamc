@@ -11,7 +11,7 @@ import database.usersql.UsersData;
 
 import java.util.ArrayList;
 
-public class DataBaseTest {
+public class databasetest{
     public static void main(String args[]) {
         System.out.println("start");
         int test = 0;
