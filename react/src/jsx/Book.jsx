@@ -120,16 +120,30 @@ class Book extends React.Component {
 							)}
 
 							{this.props.registered ? (
-								<Grid xs={3} item>
-									<Button
-										color="secondary"
-										variant="contained"
-										height="20px"
-										onClick={this.doDelete}
-									>
-										削除
-									</Button>
-								</Grid>
+								this.isLend ? (
+									<Grid xs={3} item>
+										<Button
+											color="secondary"
+											variant="contained"
+											height="20px"
+											onClick={this.doDelete}
+											disabled
+										>
+											削除
+										</Button>
+									</Grid>
+								) : (
+									<Grid xs={3} item>
+										<Button
+											color="secondary"
+											variant="contained"
+											height="20px"
+											onClick={this.doDelete}
+										>
+											削除
+										</Button>
+									</Grid>
+								)
 							) : (
 								<Grid xs={3} item>
 									<Button
