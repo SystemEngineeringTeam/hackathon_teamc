@@ -69,6 +69,8 @@ class Book extends React.Component {
 			console.log(res)
 			this.isLend = 1
 		})
+
+		location.href = "/shelf"
 	}
 
 	render() {
