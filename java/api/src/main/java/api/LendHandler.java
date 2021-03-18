@@ -54,7 +54,7 @@ public class LendHandler implements HttpHandler {
         // レスポンスボディを構築
         // (ここでは Java 14 から正式導入された Switch Expressions と
         //  Java 14 でプレビュー機能として使えるヒアドキュメント的な Text Blocks 機能を使ってみる)
-
+        try {
             lendpostdata data;
             switch (t.getRequestMethod().toLowerCase(Locale.ROOT)) {
                 case "post":
@@ -75,6 +75,10 @@ public class LendHandler implements HttpHandler {
                 default:
                     break;
             }
+        }catch (IOException){
+            System.out.println(e);
+        }
+
 
 
         if (resBody.equals("1") || resBody.equals("0")) {
