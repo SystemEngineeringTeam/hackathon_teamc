@@ -1,6 +1,8 @@
 
 package api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
@@ -26,10 +28,6 @@ public class UserHandler implements HttpHandler {
     // HTTP リクエストを処理する
     public void handle(HttpExchange t) throws IOException {
         System.out.println("**************************************************");
-
-        t.getResponseHeaders().add("Access-Control-Allow-Headers","x-prototype-version,x-requested-with");
-        t.getResponseHeaders().add("Access-Control-Allow-Methods","*");
-        t.getResponseHeaders().add("Access-Control-Allow-Origin","*");
 
         String resBody = "";
         ObjectMapper mapper = new ObjectMapper();
@@ -79,19 +77,15 @@ public class UserHandler implements HttpHandler {
             case "post":
                 reqBody = new String(b, StandardCharsets.UTF_8);
                 usersData = mapper.readValue(reqBody, UsersData.class);
-                System.out.println(usersData.name);
-                System.out.println(usersData.mailaddress);
-                System.out.println(usersData.pass);
 
                 int post = AddUser.adduser(usersData);
                 resBody = mapper.writeValueAsString(post);
-                System.out.println(post);
                 break;
 
             case "put":
                 reqBody = new String(b, StandardCharsets.UTF_8);
                 usersData = mapper.readValue(reqBody, UsersData.class);
-                int put = UpdateUser.updateuser(usersData.name,usersData.mailaddress,usersData.pass);
+                int put = UpdateUser.updateuser(usersData.name, usersData.mailaddress, usersData.pass);
                 resBody = mapper.writeValueAsString(put);
                 break;
 
@@ -100,7 +94,7 @@ public class UserHandler implements HttpHandler {
 
         }
 
-        if (resBody.equals("1") || resBody.equals("0")){
+        if (resBody.equals("1") || resBody.equals("0")) {
             TFResBody rsbdy = new TFResBody();
             rsbdy.setAvailable(resBody);
             resBody = mapper.writeValueAsString(rsbdy);
@@ -117,6 +111,9 @@ public class UserHandler implements HttpHandler {
                         System.getProperty("java.vm.vendor") + " " +
                         System.getProperty("java.vm.version") + ")");
 
+        t.getResponseHeaders().add("Access-Control-Allow-Headers", "*");
+        t.getResponseHeaders().add("Access-Control-Allow-Methods", "*");
+        t.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
 
         // レスポンスヘッダを送信
         int statusCode = 200;

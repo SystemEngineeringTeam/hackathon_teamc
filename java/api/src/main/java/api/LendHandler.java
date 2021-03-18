@@ -83,15 +83,14 @@ public class LendHandler implements HttpHandler {
                         System.getProperty("java.vm.vendor") + " " +
                         System.getProperty("java.vm.version") + ")");
 
+        t.getResponseHeaders().add("Access-Control-Allow-Headers","*");
+        t.getResponseHeaders().add("Access-Control-Allow-Methods","*");
+        t.getResponseHeaders().add("Access-Control-Allow-Origin","*");
 
 
         // レスポンスヘッダを送信
         int statusCode = 200;
         long contentLength = resBody.getBytes(StandardCharsets.UTF_8).length;
-
-        t.getRequestHeaders().add("Access-Control-Allow-Headers","*");
-        t.getRequestHeaders().add("Access-Control-Allow-Methods","*");
-        t.getRequestHeaders().add("Access-Control-Allow-Origin","*");
 
         t.sendResponseHeaders(statusCode, contentLength);
 

@@ -8,6 +8,7 @@ import com.sun.net.httpserver.HttpHandler;
 import database.loginsql.LoginSql;
 import database.usersql.UpdateUser;
 import database.usersql.UsersData;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -21,9 +22,7 @@ public class LoginHandler implements HttpHandler {
 
     // HTTP リクエストを処理する
     public void handle(HttpExchange t) throws IOException {
-        t.getResponseHeaders().add("Access-Control-Allow-Headers","x-prototype-version,x-requested-with");
-        t.getResponseHeaders().add("Access-Control-Allow-Methods","*");
-        t.getResponseHeaders().add("Access-Control-Allow-Origin","*");
+
         System.out.println("**************************************************");
         String resBody = "";
         String reqBody = "";
@@ -58,10 +57,10 @@ public class LoginHandler implements HttpHandler {
         if (t.getRequestMethod().toLowerCase(Locale.ROOT).equals("post")) {
             reqBody = new String(b, StandardCharsets.UTF_8);
             UsersData usersData = mapper.readValue(reqBody, UsersData.class);
-            int put = LoginSql.loginsql(usersData.mailaddress,usersData.pass);
+            int put = LoginSql.loginsql(usersData.mailaddress, usersData.pass);
             resBody = mapper.writeValueAsString(put);
 
-            if (resBody.equals("1") || resBody.equals("0")){
+            if (resBody.equals("1") || resBody.equals("0")) {
                 TFResBody rsbdy = new TFResBody();
                 rsbdy.setAvailable(resBody);
                 resBody = mapper.writeValueAsString(rsbdy);
@@ -79,6 +78,9 @@ public class LoginHandler implements HttpHandler {
                         System.getProperty("java.vm.vendor") + " " +
                         System.getProperty("java.vm.version") + ")");
 
+        t.getResponseHeaders().add("Access-Control-Allow-Headers", "*");
+        t.getResponseHeaders().add("Access-Control-Allow-Methods", "*");
+        t.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
 
         // レスポンスヘッダを送信
         int statusCode = 200;
