@@ -28,6 +28,7 @@ class Shelf extends React.Component {
 							publishYear={e.pyear}
 							src={e.cover_url}
 							registered={true}
+							lend_flag={e.lend_flag}
 						/>
 					)
 				}),

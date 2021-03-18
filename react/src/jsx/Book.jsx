@@ -19,6 +19,7 @@ class Book extends React.Component {
 
 		this.doAdd = this.doAdd.bind(this)
 		this.doBorrow = this.doBorrow.bind(this)
+		this.isLend = this.props.lend_flag
 	}
 
 	async doAdd(e) {
@@ -47,12 +48,12 @@ class Book extends React.Component {
 	async doBorrow() {
 		let body = {
 			bookID: this.props.bookID,
-			email: "hoge@hoge.jp",
+			email: "hoge",
 		}
 
 		await axios.post(host.lend, body).then((res) => {
 			console.log(res)
-			this.props.lend_flag = 0
+			this.isLend = 1
 		})
 	}
 
@@ -81,24 +82,29 @@ class Book extends React.Component {
 						</Grid>
 						<Grid container>
 							<Grid item xs={this.props.registered ? 5 : 8}></Grid>
-							{this.props.registered && this.props.lend_flag ? (
-								<Grid xs={3} item>
-									<Button color="primary" variant="contained" height="20px">
-										貸出中
-									</Button>
-								</Grid>
+							{this.props.registered ? (
+								this.isLend ? (
+									<Grid xs={3} item>
+										<Button disabled variant="contained" height="20px">
+											貸出中
+										</Button>
+									</Grid>
+								) : (
+									<Grid xs={3} item>
+										<Button
+											color="primary"
+											variant="contained"
+											height="20px"
+											onClick={this.doBorrow}
+										>
+											借りる
+										</Button>
+									</Grid>
+								)
 							) : (
-								<Grid xs={3} item>
-									<Button
-										color="primary"
-										variant="contained"
-										height="20px"
-										onClick={this.doBorrow}
-									>
-										借りる
-									</Button>
-								</Grid>
+								<div />
 							)}
+
 							{this.props.registered ? (
 								<Grid xs={3} item>
 									<Button color="secondary" variant="contained" height="20px">
