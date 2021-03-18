@@ -1,14 +1,14 @@
 
 package api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import database.usersql.AddUser;
-import database.usersql.SelectUserSql;
-import database.usersql.UpdateUser;
-import database.usersql.UsersData;
+import database.usersql.*;
 //import database.src.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -28,6 +29,7 @@ public class UserHandler implements HttpHandler {
     // HTTP リクエストを処理する
     public void handle(HttpExchange t) throws IOException {
         System.out.println("**************************************************");
+
         String resBody = "";
         ObjectMapper mapper = new ObjectMapper();
 
@@ -60,13 +62,14 @@ public class UserHandler implements HttpHandler {
         // (ここでは Java 14 から正式導入された Switch Expressions と
         //  Java 14 でプレビュー機能として使えるヒアドキュメント的な Text Blocks 機能を使ってみる)
 
-
+        String reqBody;
+        UsersData usersData = new UsersData();
         switch (t.getRequestMethod().toLowerCase(Locale.ROOT)) {
 
             case "get":
-                String reqBody = new String(b, StandardCharsets.UTF_8);
-                UsersData usersData = mapper.readValue(reqBody, UsersData.class);
-                UsersData getUserData = SelectUserSql.selectusersql(usersData.mailaddress);
+                reqBody = new String(b, StandardCharsets.UTF_8);
+                usersData = mapper.readValue(reqBody, UsersData.class);
+                selectdata getUserData = SelectUserSql.selectusersql(usersData.mailaddress);
                 resBody = mapper.writeValueAsString(getUserData);
                 System.out.println(resBody);
                 break;
@@ -75,26 +78,27 @@ public class UserHandler implements HttpHandler {
             case "post":
                 reqBody = new String(b, StandardCharsets.UTF_8);
                 usersData = mapper.readValue(reqBody, UsersData.class);
-                System.out.println(usersData.name);
-                System.out.println(usersData.mailaddress);
-                System.out.println(usersData.pass);
 
                 int post = AddUser.adduser(usersData);
                 resBody = mapper.writeValueAsString(post);
-                System.out.println(post);
-
                 break;
-//
-//
-//
-//
-//            case "put":
-////            String email = "";
-////            String password = "";
-////            String name = "";
-////            int put = UpdateUser.updateuser(email,password,name);
-//            break;
-//
+
+            case "put":
+                reqBody = new String(b, StandardCharsets.UTF_8);
+                usersData = mapper.readValue(reqBody, UsersData.class);
+                int put = UpdateUser.updateuser(usersData.name, usersData.mailaddress, usersData.pass);
+                resBody = mapper.writeValueAsString(put);
+                break;
+
+            default:
+                break;
+
+        }
+
+        if (resBody.equals("1") || resBody.equals("0")) {
+            TFResBody rsbdy = new TFResBody();
+            rsbdy.setAvailable(resBody);
+            resBody = mapper.writeValueAsString(rsbdy);
         }
 
 
@@ -108,20 +112,33 @@ public class UserHandler implements HttpHandler {
                         System.getProperty("java.vm.vendor") + " " +
                         System.getProperty("java.vm.version") + ")");
 
+        t.getResponseHeaders().add("Access-Control-Allow-Headers", "*");
+        t.getResponseHeaders().add("Access-Control-Allow-Methods", "*");
+        t.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
 
         // レスポンスヘッダを送信
         int statusCode = 200;
         long contentLength = resBody.getBytes(StandardCharsets.UTF_8).length;
         t.sendResponseHeaders(statusCode, contentLength);
-        t.getResponseHeaders().add("Access-Control-Allow-Headers", "x-prototype-version,x-requested-with");
-        t.getResponseHeaders().add("Access-Control-Allow-Methods", "*");
-        t.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+
 
         // レスポンスボディを送信
         OutputStream os = t.getResponseBody();
         os.write(resBody.getBytes());
         os.close();
 
+    }
+
+    public static class selectdata{
+        String email;
+        ArrayList<Integer> list;
+        public void setEmail(String ml){
+            email = ml;
+        }
+
+        public void setList(Integer bid) {
+            list.add(bid);
+        }
     }
 }
 
