@@ -20,7 +20,7 @@ public class AddLendSql {
             if (hrs.next()) {
                 uid = hrs.getInt("id");
             }
-            String dt2 = "INSERT INTO rental_lists " + "VALUES(?,?,?,0);";
+            String dt2 = "INSERT INTO rental_lists " + "VALUES(?,?,?,1);";
             java.util.Date today = new Date();
             Calendar clndr = Calendar.getInstance();
             clndr.setTime(today);
