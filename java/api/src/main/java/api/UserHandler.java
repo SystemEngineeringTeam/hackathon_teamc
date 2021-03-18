@@ -134,8 +134,8 @@ public class UserHandler implements HttpHandler {
     }
 
     public static class selectdata{
-        String email;
-        ArrayList<Integer> list;
+        public  String email;
+        public ArrayList<Integer> list;
         public void setEmail(String ml){
             email = ml;
         }
