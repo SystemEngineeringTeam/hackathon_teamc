@@ -16,10 +16,11 @@ services:
   api:
     build: ./java
     container_name: app_api
+    volumes:
+      - ./java/api:/app
     ports:
-      - 8080:80
+      - 8000:8000
     command:
       - sh
-      - /wait/wait
-      - java
-      - Main
+    tty:
+      true

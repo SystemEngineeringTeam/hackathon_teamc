@@ -11,7 +11,7 @@ public class AddLendSql {
         Statement stmt = null;
         try {
             Class.forName("org.mariadb.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
+            conn = DriverManager.getConnection("jdbc:mariadb://app_mariadb/app_db", "hoge", "hogehoge");
             String dt1 = "SELECT id " + "FROM users " + "WHERE mailaddress = ?;";
             PreparedStatement sql = conn.prepareStatement(dt1);
             sql.setString(1, eml);

@@ -11,7 +11,7 @@ public class UpdateBookSql {
         try{
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
-                    "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
+                    "jdbc:mariadb://app_mariadb/app_db", "hoge", "hogehoge");
             String dt1 = "UPDATE books " +
                             "SET title = ?, author = ?, publisher = ?, publishyear = ?,cover_url = ? " +
                             "WHERE id = ?;";

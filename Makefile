@@ -12,7 +12,7 @@ DOWN=$(COMPOSE) down
 JAVA=$(EXEC) api
 DB=$(EXEC) mariadb
 
-all: docker/up
+all: docker/up api/build
 
 docker/build: ## docker build
 	$(BUILD)
@@ -47,14 +47,20 @@ docker/volume/prune: ### docker volume prune
 java/bash: ## java container bash
 	$(JAVA) bash
 
+api:
+	$(JAVA) sh gradlew run
+
+api/build:
+	$(JAVA) sh gradlew build
+
+api/down:
+	$(DOWN) api -v
+
 db/bash: ## db(MySQL) container bash
 	$(DB) bash
 
-db/wait: ## waiting start db(MySQL) container
-	$(DB) /home/wait.sh
-
 mysql: ## db(MySQL) container's MySQL access
-	$(DB) mysql --defaults-extra-file=/home/access.cnf winter
+	$(DB) mysql --defaults-extra-file=/app/access.cnf winter
 
 help: ## Display this help screen
 	@grep -E '^[a-zA-Z/_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'

@@ -10,7 +10,7 @@ public class DeleteBookSql {
         try {
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
-                    "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
+                    "jdbc:mariadb://app_mariadb/app_db", "hoge", "hogehoge");
             String dt = "DElETE FROM books WHERE id = ?;";
             PreparedStatement sql = conn.prepareStatement(dt);
             sql.setInt(1, id);

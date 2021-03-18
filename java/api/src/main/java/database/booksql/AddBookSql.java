@@ -10,7 +10,7 @@ public class AddBookSql {
         try{
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(
-                    "jdbc:mariadb://localhost/app_db", "hoge", "hogehoge");
+                    "jdbc:mariadb://app_mariadb/app_db", "hoge", "hogehoge");
             String dt = "INSERT INTO books(title,author,publisher,publishyear,cover_url) " +
                             "VALUES (?,?,?,?,?);";
             PreparedStatement sql = conn.prepareStatement(dt);
