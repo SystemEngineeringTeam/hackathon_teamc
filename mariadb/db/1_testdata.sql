@@ -11,4 +11,4 @@ INSERT INTO book_tags
     VALUE(1,1);
 
 INSERT INTO rental_lists
-    VALUE(1,1,2021-3-20,1);
+    VALUE(1,1,'2021-03-20',1);
