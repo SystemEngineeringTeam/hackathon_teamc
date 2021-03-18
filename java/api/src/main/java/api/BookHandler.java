@@ -88,19 +88,21 @@ public class BookHandler implements HttpHandler {
                     System.out.println("hoge");
                     reqBody = new String(b, StandardCharsets.UTF_8);
                     System.out.println("hello");
-                    BooksData putbook = new BooksData();
-                    putbook = mapper.readValue(reqBody, BooksData.class);
-
-
+                    BooksData putbook = mapper.readValue(reqBody, BooksData.class);
                     int put = UpdateBookSql.updatebooksql(putbook);
                     resBody = mapper.writeValueAsString(put);
                     System.out.println(resBody);
-
+                    break;
                 default:
                     break;
             }
         } catch (IOException e) {
             System.out.println(e);
+        }
+        if (resBody.equals("1") || resBody.equals("0")) {
+            TFResBody rsbdy = new TFResBody();
+            rsbdy.setAvailable(resBody);
+            resBody = mapper.writeValueAsString(rsbdy);
         }
 
         Headers resHeaders = t.getResponseHeaders();
