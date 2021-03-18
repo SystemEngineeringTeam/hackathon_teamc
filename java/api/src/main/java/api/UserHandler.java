@@ -64,8 +64,8 @@ public class UserHandler implements HttpHandler {
         switch (t.getRequestMethod().toLowerCase(Locale.ROOT)) {
 
             case "get":
-                String reqBody = new String(b,StandardCharsets.UTF_8);
-                UsersData usersData = mapper.readValue(reqBody,UsersData.class);
+                String reqBody = new String(b, StandardCharsets.UTF_8);
+                UsersData usersData = mapper.readValue(reqBody, UsersData.class);
                 UsersData getUserData = SelectUserSql.selectusersql(usersData.mailaddress);
                 resBody = mapper.writeValueAsString(getUserData);
                 System.out.println(resBody);
@@ -73,8 +73,8 @@ public class UserHandler implements HttpHandler {
 
 
             case "post":
-                 reqBody = new String(b, StandardCharsets.UTF_8);
-                 usersData = mapper.readValue(reqBody, UsersData.class);
+                reqBody = new String(b, StandardCharsets.UTF_8);
+                usersData = mapper.readValue(reqBody, UsersData.class);
                 System.out.println(usersData.name);
                 System.out.println(usersData.mailaddress);
                 System.out.println(usersData.pass);
@@ -98,29 +98,32 @@ public class UserHandler implements HttpHandler {
         }
 
 
-            Headers resHeaders = t.getResponseHeaders();
-            resHeaders.set("Content-Type", "application/json");
-            resHeaders.set("Last-Modified",
-                    ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME));
-            resHeaders.set("Server",
-                    "MyServer (" +
-                            System.getProperty("java.vm.name") + " " +
-                            System.getProperty("java.vm.vendor") + " " +
-                            System.getProperty("java.vm.version") + ")");
+        Headers resHeaders = t.getResponseHeaders();
+        resHeaders.set("Content-Type", "application/json");
+        resHeaders.set("Last-Modified",
+                ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        resHeaders.set("Server",
+                "MyServer (" +
+                        System.getProperty("java.vm.name") + " " +
+                        System.getProperty("java.vm.vendor") + " " +
+                        System.getProperty("java.vm.version") + ")");
 
 
-            // レスポンスヘッダを送信
-            int statusCode = 200;
-            long contentLength = resBody.getBytes(StandardCharsets.UTF_8).length;
-            t.sendResponseHeaders(statusCode, contentLength);
+        // レスポンスヘッダを送信
+        int statusCode = 200;
+        long contentLength = resBody.getBytes(StandardCharsets.UTF_8).length;
+        t.sendResponseHeaders(statusCode, contentLength);
+        t.getResponseHeaders().add("Access-Control-Allow-Headers", "x-prototype-version,x-requested-with");
+        t.getResponseHeaders().add("Access-Control-Allow-Methods", "*");
+        t.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
 
-            // レスポンスボディを送信
-            OutputStream os = t.getResponseBody();
-            os.write(resBody.getBytes());
-            os.close();
+        // レスポンスボディを送信
+        OutputStream os = t.getResponseBody();
+        os.write(resBody.getBytes());
+        os.close();
 
-        }
     }
+}
 
 
 
