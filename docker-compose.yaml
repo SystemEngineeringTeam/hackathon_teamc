@@ -3,8 +3,6 @@ services:
   mariadb:
     build: ./mariadb
     container_name: app_mariadb
-    ports:
-      - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: my-secret-pw
       MYSQL_DATABASE: app_db
@@ -22,5 +20,12 @@ services:
       - 8000:8000
     command:
       - sh
-    tty:
-      true
+    tty: true
+
+  react:
+    image: nginx:latest
+    container_name: app_server
+    volumes:
+      - ./react/dist/:/usr/share/nginx/html/
+    ports:
+      - 8801:80
