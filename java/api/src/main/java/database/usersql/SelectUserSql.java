@@ -20,8 +20,8 @@ public class SelectUserSql {
             ResultSet hrs = sql.executeQuery();
             if (hrs.next()) {
                 rtn.setEmail(eml);
-                String dt1 = "SELECT book_id" +
-                                "FROM rental_lists" +
+                String dt1 = "SELECT book_id " +
+                                "FROM rental_lists " +
                                 "WHERE user_id = ? " +
                                 "AND lend_flag = 1;";
                 sql = conn.prepareStatement(dt1);

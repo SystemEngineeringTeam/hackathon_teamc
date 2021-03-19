@@ -9,6 +9,7 @@ import SignIn from "./SignIn/SignIn"
 import { BrowserRouter, Route } from "react-router-dom"
 import Header from "./Header"
 import Shelf from "./Shelf/Shelf"
+import MyPage from "./MyPage/MyPage"
 
 let root = document.querySelector("#root")
 ReactDOM.render(
@@ -19,6 +20,7 @@ ReactDOM.render(
 			<Route exact path="/signup" component={SignUp} />
 			<Route exact path="/signin" component={SignIn} />
 			<Route exact path="/shelf" component={Shelf} />
+			<Route exact path="/mypage" component={MyPage} />
 		</BrowserRouter>
 	</Provider>,
 	root

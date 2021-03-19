@@ -34,6 +34,7 @@ class Header extends React.Component {
 			{ text: "本の登録", path: "/search" },
 			{ text: "ユーザー登録", path: "/signup" },
 			{ text: "ログイン", path: "/signin" },
+			{ text: "マイページ", path: "/mypage" },
 		]
 		return (
 			<div>

@@ -67,9 +67,8 @@ public class UserHandler implements HttpHandler {
         switch (t.getRequestMethod().toLowerCase(Locale.ROOT)) {
 
             case "get":
-                reqBody = new String(b, StandardCharsets.UTF_8);
-                usersData = mapper.readValue(reqBody, UsersData.class);
-                selectdata getUserData = SelectUserSql.selectusersql(usersData.mailaddress);
+                String qryr = t.getRequestURI().getQuery();
+                selectdata getUserData = SelectUserSql.selectusersql(qryr.substring(6));
                 resBody = mapper.writeValueAsString(getUserData);
 
                 System.out.println(resBody);
@@ -134,8 +133,8 @@ public class UserHandler implements HttpHandler {
     }
 
     public static class selectdata{
-        public  String email;
-        public ArrayList<Integer> list;
+        public String email;
+        public ArrayList<Integer> list = new ArrayList<Integer>();
         public void setEmail(String ml){
             email = ml;
         }
