@@ -57,6 +57,8 @@ class Book extends React.Component {
 		await axios.delete(host.book, { data: body }).then((res) => {
 			console.log(res)
 		})
+
+		location.href = "/shelf"
 	}
 
 	async doBorrow() {

@@ -20,6 +20,7 @@ ReactDOM.render(
 			<Route exact path="/signup" component={SignUp} />
 			<Route exact path="/signin" component={SignIn} />
 			<Route exact path="/shelf" component={Shelf} />
+			<Route exact path="/" component={Shelf} />
 			<Route exact path="/mypage" component={MyPage} />
 		</BrowserRouter>
 	</Provider>,
