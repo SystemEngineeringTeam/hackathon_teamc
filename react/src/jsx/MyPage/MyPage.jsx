@@ -13,6 +13,7 @@ import axios from "axios"
 import Host from "../Host"
 import Header from "../Header"
 import TableItem from "./TableItem"
+import ReactDOM from "react-dom"
 
 const host = new Host()
 
@@ -25,41 +26,53 @@ class MyPage extends React.Component {
 
 	async componentDidMount() {
 		let c = document.cookie.split("=")
-		let data = []
+		this.state.list = []
 		if (c.length < 2) {
 			location.href = "/login"
 		} else {
-			await axios
-				.get(host.user, { params: { mailaddress: c[1] } })
-				.then((res) => {
+			await axios.get(host.user, { params: { email: c[1] } }).then((res) => {
+				console.log(res)
+				if (res.data.list) {
 					res.data.list.map((e) => {
-						data.push(e)
+						this.state.list.push(e)
 					})
-				})
+				}
+			})
 		}
 
 		this.setState({
-			list: data,
+			list: this.state.list,
 		})
+
+		await this.showList()
 	}
 
 	async showList() {
+		let items = document.querySelector("#items")
+		let list = []
 		await axios.get(host.book).then((res) => {
 			res.data.map((e) => {
-				console.log(e)
 				if (this.state.list.indexOf(e.id) != -1) {
-					return (
-						<TableItem
-							title={e.title}
-							author={e.author}
-							publisher={e.publisher}
-							pyear={e.pyear}
-							key={e.id}
-						/>
-					)
+					list.push(e)
 				}
 			})
 		})
+
+		ReactDOM.render(
+			list.map((e) => {
+				return (
+					<TableItem
+						title={e.title}
+						author={e.author}
+						publisher={e.publisher}
+						pyear={e.pyear}
+						bookID={e.id}
+						key={e.id}
+					/>
+				)
+			}),
+			items
+		)
 	}
 
 	render() {
@@ -78,7 +91,11 @@ class MyPage extends React.Component {
 										<TableCell>出版年</TableCell>
 									</TableRow>
 								</TableHead>
-								<TableBody>{this.showList}</TableBody>
+								<TableBody id="items">
+									{/* {this.showList().then((res) => {
+										console.log(res)
+									})} */}
+								</TableBody>
 							</Table>
 						</Paper>
 					</Grid>

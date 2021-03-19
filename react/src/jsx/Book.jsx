@@ -62,8 +62,9 @@ class Book extends React.Component {
 	async doBorrow() {
 		let body = {
 			bookID: this.props.bookID,
-			email: "hoge",
+			email: document.cookie.split("=")[1],
 		}
+		console.log(body)
 
 		await axios.post(host.lend, body).then((res) => {
 			console.log(res)
